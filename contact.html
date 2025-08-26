@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Contact — SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#0A2F33; --brand:#1f5d63; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .nav-link{padding:.5rem 1rem;border-radius:9999px}
+    .nav-active{background:#0A2F33;color:#fff !important}
+    .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.06)}
+    .err{display:none}
+    .has-error .err{display:block}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- NAVBAR -->
+  <header class="border-b bg-white sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.png" class="w-14 h-14 rounded-lg" alt="SmartCash"/>
+        <div>
+          <div class="text-2xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+          <div class="text-[13px] tracking-widest text-blue-600 uppercase">Finance</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-2 text-sm">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="loan-products.html" class="nav-link">Products</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="status.html" class="nav-link">Status Check</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+        <a class="py-2 border-b" href="index.html">Home</a>
+        <a class="py-2 border-b" href="loan-products.html">Products</a>
+        <a class="py-2 border-b" href="about.html">About Us</a>
+        <a class="py-2 border-b" href="status.html">Status Check</a>
+        <a class="py-2" href="calculator.html">EMI Calculator</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE HEAD -->
+  <section class="max-w-7xl mx-auto px-6 pt-10 pb-4">
+    <h1 class="text-3xl md:text-4xl font-extrabold">Contact Us</h1>
+    <p class="text-gray-700 mt-2">We’re here to help with applications, KYC, repayment or general questions.</p>
+  </section>
+
+  <!-- CONTENT -->
+  <main class="max-w-7xl mx-auto px-6 pb-14 grid md:grid-cols-2 gap-8">
+    <!-- Left: Details -->
+    <section class="bg-white card p-6">
+      <h2 class="text-2xl font-bold">Support & Grievance</h2>
+      <div class="mt-4 grid sm:grid-cols-2 gap-4 text-sm">
+        <div>
+          <div class="font-semibold">Support Email</div>
+          <a class="text-blue-600" href="mailto:support@smartcashfinance.in">support@smartcashfinance.in</a>
+        </div>
+        <div>
+          <div class="font-semibold">Grievance</div>
+          <a class="text-blue-600" href="mailto:grievance@smartcashfinance.in">grievance@smartcashfinance.in</a>
+        </div>
+        <div>
+          <div class="font-semibold">Working Hours</div>
+          <div>Mon–Sat, 10:00 AM – 6:00 PM</div>
+        </div>
+        <div>
+          <div class="font-semibold">Address</div>
+          <div>SmartCash Finance, Delhi, India</div>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-6">
+        We adhere to RBI Digital Lending guidelines. Loans are offered by our partner NBFCs/Banks; SmartCash Finance
+        acts as a loan service platform. Recovery practices follow applicable laws.
+      </p>
+    </section>
+
+    <!-- Right: Form -->
+    <section class="bg-white card p-6">
+      <h2 class="text-2xl font-bold mb-3">Write to us</h2>
+
+      <form id="cform" class="space-y-4" novalidate>
+        <!-- Name -->
+        <div id="gName">
+          <label class="text-sm font-medium">Your Name</label>
+          <input id="cname" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="Full name" required>
+          <p class="err text-xs text-red-600 mt-1">Please enter your full name.</p>
+        </div>
+
+        <!-- Email -->
+        <div id="gMail">
+          <label class="text-sm font-medium">Email</label>
+          <input id="cmail" type="email" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="name@example.com" required>
+          <p class="err text-xs text-red-600 mt-1">Enter a valid email.</p>
+        </div>
+
+        <!-- Mobile -->
+        <div id="gMob">
+          <label class="text-sm font-medium">Mobile Number</label>
+          <div class="mt-1 flex">
+            <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 bg-gray-50 text-gray-600 select-none">+91</span>
+            <input id="cmob" inputmode="numeric" maxlength="10"
+                   class="w-full border rounded-r-lg px-3 py-2" placeholder="10-digit mobile" required>
+          </div>
+          <p class="err text-xs text-red-600 mt-1">Enter a valid 10-digit mobile number.</p>
+        </div>
+
+        <!-- Message -->
+        <div id="gMsg">
+          <label class="text-sm font-medium">Message</label>
+          <textarea id="cmsg" rows="5" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="How can we help?" required></textarea>
+          <p class="err text-xs text-red-600 mt-1">Please write a short message.</p>
+        </div>
+
+        <button id="cbtn"
+          class="w-full rounded-full bg-[#0A2F33] hover:bg-[#062327] text-white py-3 font-semibold transition active:scale-[.98]">
+          Send
+        </button>
+
+        <div id="cok" class="hidden mt-2 text-green-600 text-sm font-semibold text-center">
+          Thanks! We’ll get back within 24–48 hrs.
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-6 text-[12px] text-gray-500 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div>© <span id="yr"></span> SmartCash Finance</div>
+      <div class="flex gap-4">
+        <a class="text-blue-600" href="privacy.html">Privacy</a>
+        <a class="text-blue-600" href="terms.html">Terms</a>
+        <a class="text-blue-600" href="fees.html">Fees & Charges</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // year
+  document.getElementById('yr').textContent=new Date().getFullYear();
+
+  // mobile menu
+  document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('hidden'));
+
+  // active nav
+  const path=(location.pathname.split('/').pop()||'contact.html');
+  document.querySelectorAll('nav a.nav-link').forEach(a=>{
+    if(a.getAttribute('href')===path || (path==='' && a.getAttribute('href')==='contact.html')){
+      a.classList.add('nav-active');
+    }
+  });
+
+  // ---- Contact form validation & save ----
+  const f = {
+    form: document.getElementById('cform'),
+    name: document.getElementById('cname'),
+    mail: document.getElementById('cmail'),
+    mob:  document.getElementById('cmob'),
+    msg:  document.getElementById('cmsg'),
+    ok:   document.getElementById('cok')
+  };
+  const g = {
+    name: document.getElementById('gName'),
+    mail: document.getElementById('gMail'),
+    mob:  document.getElementById('gMob'),
+    msg:  document.getElementById('gMsg')
+  };
+
+  const isName = v => v.trim().length>=3;
+  const isMail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+  const isMob  = v => /^[6-9]\d{9}$/.test(v.trim());
+  const isMsg  = v => v.trim().length>=5;
+
+  function setErr(group, input, bad){
+    group.classList.toggle('has-error', bad);
+    input.classList.toggle('border-red-500', bad);
+    input.classList.toggle('ring-1', bad);
+    input.classList.toggle('ring-red-500', bad);
+  }
+
+  function validate(show){
+    const okN=isName(f.name.value);
+    const okE=isMail(f.mail.value);
+    const okM=isMob(f.mob.value);
+    const okS=isMsg(f.msg.value);
+    if(show){
+      setErr(g.name,f.name,!okN);
+      setErr(g.mail,f.mail,!okE);
+      setErr(g.mob ,f.mob ,!okM);
+      setErr(g.msg ,f.msg ,!okS);
+    }
+    return okN&&okE&&okM&&okS;
+  }
+
+  ['input','blur'].forEach(ev=>{
+    [f.name,f.mail,f.mob,f.msg].forEach(el=>el.addEventListener(ev,()=>validate(false)));
+  });
+
+  f.form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    if(!validate(true)) return;
+
+    // save query
+    const all = JSON.parse(localStorage.getItem('smartcash_msgs')||'[]');
+    all.push({
+      name: toTitle(f.name.value),
+      email: f.mail.value.trim(),
+      mobile: '+91'+f.mob.value.trim(),
+      msg: f.msg.value.trim(),
+      ts: new Date().toISOString()
+    });
+    localStorage.setItem('smartcash_msgs', JSON.stringify(all));
+
+    f.ok.classList.remove('hidden');
+    f.form.reset();
+  });
+
+  function toTitle(str){
+    return str.toLowerCase().split(/\s+/).filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+  }
+</script>
+</body>
+</html>

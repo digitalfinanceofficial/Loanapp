@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Status Check — SmartCash Finance</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0A2F33; --brand:#1f5d63; --accent:#F59E0B; }
+  body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+  .nav-link{padding:.5rem 1rem;border-radius:9999px}
+  .nav-active{background:#0A2F33;color:#fff !important}
+  .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.08)}
+  .teal-dots{
+    background:
+      radial-gradient(circle at 12px 12px, rgba(255,255,255,.07) 2px, transparent 2.6px) 0 0/24px 24px,
+      #1f5d63;
+  }
+  .dot{width:12px;height:12px;border-radius:9999px}
+  .bar{height:4px;border-radius:9999px}
+</style>
+</head>
+<body class="bg-white text-gray-900">
+
+<!-- NAVBAR -->
+<header class="border-b bg-white sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="assets/logo.png" class="w-14 h-14 rounded-lg" alt="SmartCash"/>
+      <div>
+        <div class="text-2xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+        <div class="text-[13px] tracking-widest text-blue-600 uppercase">Finance</div>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-2 text-sm">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="loan-products.html" class="nav-link">Products</a>
+      <a href="about.html" class="nav-link">About Us</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="status.html" class="nav-link">Status Check</a>
+    </nav>
+
+    <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+      <a class="py-2 border-b" href="index.html">Home</a>
+      <a class="py-2 border-b" href="loan-products.html">Products</a>
+      <a class="py-2 border-b" href="about.html">About Us</a>
+      <a class="py-2 border-b" href="contact.html">Contact</a>
+      <a class="py-2" href="calculator.html">EMI Calculator</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO BAR -->
+<section class="teal-dots text-white">
+  <div class="max-w-7xl mx-auto px-6 py-12">
+    <h1 class="text-3xl md:text-4xl font-extrabold">Check Status</h1>
+    <p class="text-white/90 mt-2">Enter your registered email or mobile to view your application progress.</p>
+  </div>
+</section>
+
+<!-- SEARCH + RESULT -->
+<main class="max-w-4xl mx-auto px-6 -mt-8 pb-16">
+  <section class="bg-white card p-6">
+    <form id="sform" class="space-y-4" novalidate>
+      <div id="gQuery">
+        <label class="text-sm font-medium">Enter Registered Email or Mobile Number</label>
+        <input id="q" class="mt-1 w-full border rounded-lg px-4 py-3" placeholder="Email or Mobile Number" required>
+        <p class="hidden text-xs text-red-600 mt-2" id="qErr">Please enter a registered email / mobile number.</p>
+      </div>
+      <button id="checkBtn" class="w-full rounded-full bg-[#0A2F33] hover:bg-[#062327] text-white py-3 font-semibold transition active:scale-[.98]">
+        Check Status
+      </button>
+    </form>
+
+    <!-- RESULT -->
+    <div id="result" class="hidden mt-6 space-y-6">
+      <div class="rounded-xl border p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div><div class="text-sm text-gray-500">Application ID</div><div id="rId" class="font-semibold">—</div></div>
+          <div><div class="text-sm text-gray-500">Applicant</div><div id="rName" class="font-semibold">—</div></div>
+          <div><span id="rBadge" class="px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-700">—</span></div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="mt-5">
+          <div class="flex items-center justify-between text-xs text-gray-500">
+            <span>Progress</span><span id="rPct">0%</span>
+          </div>
+          <div class="w-full h-2 bg-gray-200 rounded-full mt-2 overflow-hidden">
+            <div id="rBar" class="h-2 bg-emerald-500 rounded-full" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- CONNECTED TIMELINE -->
+        <div class="mt-6">
+          <div id="rTimeline" class="flex items-center gap-2"></div>
+          <div id="rLabels" class="mt-2 grid grid-cols-5 text-center text-xs text-gray-600"></div>
+        </div>
+
+        <div class="mt-6 text-sm text-gray-500">Last update: <span id="rTs">—</span></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="rounded-xl border p-5">
+          <div class="font-semibold">What happens next?</div>
+          <p id="rNext" class="text-sm text-gray-700 mt-2">—</p>
+        </div>
+        <div class="rounded-xl border p-5">
+          <div class="font-semibold">Need help?</div>
+          <p class="text-sm text-gray-700 mt-2">
+            Email: <a href="mailto:support@smartcashfinance.in" class="text-blue-600">support@smartcashfinance.in</a><br>
+            Hours: Mon–Sat, 10:00 AM – 6:00 PM
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOT FOUND -->
+    <div id="notFound" class="hidden mt-6 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 p-4">
+      We couldn’t find an application with that email or mobile. Please check your details.
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER (rich) -->
+<section class="bg-[#0f3d43] text-white">
+  <div class="max-w-7xl mx-auto px-6 py-2 text-[12px] opacity-80">
+    Starting interest rate varies by profile; loans subject to KYC & income verification. T&C apply. Example: ₹1,00,000 @ 18% p.a. for 24 months → EMI ≈ ₹4,992. Actual APR & charges depend on profile.
+  </div>
+  <div class="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
+    <div>
+      <div class="text-xl font-semibold mb-3">Quick Links</div>
+      <ul class="space-y-2 text-gray-200">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="apply.html">Apply Now</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="calculator.html">Loan EMI Calculator</a></li>
+        <li><a href="fees.html">Fees & Charges</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="text-xl font-semibold mb-3">Other Links</div>
+      <ul class="space-y-2 text-gray-200">
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="documents.html">Documents Required</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms & Conditions</a></li>
+        <li><a href="use.html">Terms of Use</a></li>
+        <li><a href="refund.html">Refund Policy</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="text-xl font-semibold mb-3">Support</div>
+      <div class="text-gray-200">
+        support@smartcashfinance.in<br>
+        573, 3rd Floor, Main Road, Chirag, New Delhi — 110017<br>
+        Mon–Sat, 10:00 AM – 6:00 PM
+      </div>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto px-6 pb-10 text-gray-300 text-sm">
+    <div class="font-semibold mb-2">Grievance Redressal</div>
+    We adhere to RBI directives and maintain a dedicated Grievance Redressal Cell. Write to
+    <a class="underline" href="mailto:grievance@smartcashfinance.in">grievance@smartcashfinance.in</a>. SmartCash Finance is a loan service platform partnering with RBI-registered NBFCs/Banks. Loans are at lender’s discretion, subject to eligibility and verification.
+  </div>
+  <div class="border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-6 py-6 text-[12px] text-gray-300">© <span id="yr"></span> SmartCash Finance. All rights reserved.</div>
+  </div>
+</section>
+
+<script>
+  // year + mobile menu + active nav
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('hidden'));
+  const path=(location.pathname.split('/').pop()||'status.html');
+  document.querySelectorAll('nav a.nav-link').forEach(a=>{
+    if(a.getAttribute('href')===path || (path===''&&a.getAttribute('href')==='status.html')) a.classList.add('nav-active');
+  });
+
+  // ---------- Helpers ----------
+  const steps = ['Received','Under Review','KYC Pending','Bank Approval','Disbursed'];
+  const statusColors = {
+    'Received':'bg-gray-100 text-gray-700',
+    'Under Review':'bg-blue-100 text-blue-700',
+    'KYC Pending':'bg-amber-100 text-amber-800',
+    'Bank Approval':'bg-indigo-100 text-indigo-700',
+    'Disbursed':'bg-emerald-100 text-emerald-700',
+    'Rejected':'bg-rose-100 text-rose-700'
+  };
+  const nextMsgs = [
+    'We’ve received your application. Moving it to verification shortly.',
+    'Your application is being verified by our team. No action needed right now.',
+    'Please complete eKYC & upload documents to speed up approval.',
+    'Bank is reviewing your file. You may receive a verification call.',
+    'Funds disbursed. You’ll receive a confirmation SMS/email.'
+  ];
+  const normEmail = v => v.trim().toLowerCase();
+  const normMobile = v => { const d=v.replace(/\D/g,'').slice(-10); return d.length===10?'+91'+d:null; };
+  const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+  const isMob10 = v => !!normMobile(v);
+
+  // ---------- Storage ----------
+  function getApps(){ try{return JSON.parse(localStorage.getItem('scf_applications')||'[]')}catch{return[]} }
+  function saveApps(list){ localStorage.setItem('scf_applications', JSON.stringify(list)); }
+
+  // Seed from lead if needed
+  function seedFromLead(query){
+    try{
+      const lead = JSON.parse(localStorage.getItem('scf_lead')||'null');
+      if(!lead) return null;
+      const qEmail=isEmail(query)?normEmail(query):null;
+      const qMobile=!qEmail?normMobile(query):null;
+      if((qEmail && lead.email && normEmail(lead.email)===qEmail) || (qMobile && lead.mobile && lead.mobile===qMobile)){
+        const apps=getApps();
+        const exist=apps.find(a=>(a.email&&normEmail(a.email)===normEmail(lead.email))||(a.mobile&&a.mobile===lead.mobile));
+        if(exist) return exist;
+        const rec={id:'SCF'+Math.random().toString(36).slice(2,8).toUpperCase(),name:lead.name||'Applicant',email:lead.email||'',mobile:lead.mobile||'',status:'Received',statusIndex:0,ts:new Date().toISOString()};
+        apps.push(rec); saveApps(apps); return rec;
+      }
+    }catch{}
+    return null;
+  }
+  function findApplication(query){
+    const apps=getApps();
+    const qEmail=isEmail(query)?normEmail(query):null;
+    const qMobile=!qEmail?normMobile(query):null;
+    let rec=apps.find(a => (qEmail && a.email && normEmail(a.email)===qEmail) || (qMobile && a.mobile && a.mobile===qMobile));
+    if(!rec) rec=seedFromLead(query);
+    return rec||null;
+  }
+
+  // ---------- UI ----------
+  const sform=document.getElementById('sform');
+  const q=document.getElementById('q');
+  const qErr=document.getElementById('qErr');
+  const result=document.getElementById('result');
+  const notFound=document.getElementById('notFound');
+
+  function renderTimeline(curIndex){
+    const wrap=document.getElementById('rTimeline');
+    const labels=document.getElementById('rLabels');
+    wrap.innerHTML=''; labels.innerHTML='';
+    for(let i=0;i<steps.length;i++){
+      // dot
+      const dot=document.createElement('div');
+      dot.className='dot '+(i<curIndex?'bg-emerald-500':(i===curIndex?'bg-amber-500':'bg-gray-300'));
+      wrap.appendChild(dot);
+      // connector (except last)
+      if(i<steps.length-1){
+        const bar=document.createElement('div');
+        bar.className='flex-1 bar '+(i<curIndex?'bg-emerald-500':'bg-gray-300');
+        wrap.appendChild(bar);
+      }
+      // label row
+      const lab=document.createElement('div');
+      lab.textContent=steps[i];
+      lab.className=''+(i===curIndex?'font-semibold text-gray-800':(i<curIndex?'text-emerald-700':'text-gray-600'));
+      labels.appendChild(lab);
+    }
+    // labels grid columns = steps
+    labels.style.gridTemplateColumns='repeat('+steps.length+', minmax(0,1fr))';
+  }
+
+  function render(app){
+    document.getElementById('rId').textContent=app.id;
+    document.getElementById('rName').textContent=app.name||'—';
+    const badge=document.getElementById('rBadge');
+    badge.textContent=app.status;
+    badge.className='px-3 py-1 text-sm rounded-full '+(statusColors[app.status]||'bg-gray-100 text-gray-700');
+    document.getElementById('rTs').textContent=new Date(app.ts).toLocaleString();
+
+    const pct=Math.round((app.statusIndex/(steps.length-1))*100);
+    document.getElementById('rPct').textContent=pct+'%';
+    document.getElementById('rBar').style.width=pct+'%';
+
+    renderTimeline(app.statusIndex);
+    document.getElementById('rNext').textContent=nextMsgs[app.statusIndex]||'—';
+  }
+
+  // Auto move to "Under Review" on first check
+  function bumpToUnderReview(app){
+    if(app.statusIndex===0){
+      app.status='Under Review';
+      app.statusIndex=1;
+      app.ts=new Date().toISOString();
+      const apps=getApps().map(a=>a.id===app.id?app:a);
+      saveApps(apps);
+    }
+  }
+
+  sform.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const val=q.value.trim();
+    const ok=isEmail(val)||isMob10(val);
+    qErr.classList.toggle('hidden',ok);
+    q.classList.toggle('border-red-500',!ok);
+    q.classList.toggle('ring-1',!ok);
+    q.classList.toggle('ring-red-500',!ok);
+    if(!ok){ result.classList.add('hidden'); notFound.classList.add('hidden'); return; }
+
+    let app=findApplication(val);
+    if(!app){ result.classList.add('hidden'); notFound.classList.remove('hidden'); return; }
+    notFound.classList.add('hidden');
+
+    bumpToUnderReview(app);           // Received → Under Review
+    app=findApplication(val);         // reload updated record
+    render(app);
+    result.classList.remove('hidden');
+  });
+
+  // Prefill input from lead
+  try{
+    const lead=JSON.parse(localStorage.getItem('scf_lead')||'null');
+    if(lead?.email) q.value=lead.email;
+    else if(lead?.mobile?.startsWith('+91')) q.value=lead.mobile.slice(3);
+  }catch{}
+</script>
+</body>
+</html>

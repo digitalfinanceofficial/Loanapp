@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Documents Required — SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#0A2F33; --brand:#1f5d63; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .nav-link{padding:.5rem 1rem;border-radius:9999px}
+    .nav-active{background:#0A2F33;color:#fff !important}
+    .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.06)}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- NAVBAR -->
+  <header class="border-b bg-white sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.png" class="w-14 h-14 rounded-lg" alt="SmartCash"/>
+        <div>
+          <div class="text-2xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+          <div class="text-[13px] tracking-widest text-blue-600 uppercase">Finance</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-2 text-sm">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="loan-products.html" class="nav-link">Products</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="status.html" class="nav-link">Status Check</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+        <a class="py-2 border-b" href="index.html">Home</a>
+        <a class="py-2 border-b" href="loan-products.html">Products</a>
+        <a class="py-2 border-b" href="about.html">About Us</a>
+        <a class="py-2 border-b" href="status.html">Status Check</a>
+        <a class="py-2" href="calculator.html">EMI Calculator</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE HEAD -->
+  <section class="max-w-7xl mx-auto px-6 pt-10 pb-4">
+    <h1 class="text-3xl md:text-4xl font-extrabold">Documents Required</h1>
+    <p class="text-gray-700 mt-2">These documents are needed for verification & quick loan approval.</p>
+  </section>
+
+  <!-- CONTENT -->
+  <main class="max-w-7xl mx-auto px-6 pb-16 grid md:grid-cols-2 gap-8">
+
+    <!-- Identity & Address -->
+    <section class="bg-white card p-6">
+      <h2 class="text-2xl font-bold">Identity & Address Proof</h2>
+      <ul class="mt-4 space-y-2 text-gray-700 list-disc ml-5">
+        <li><b>Aadhaar Card</b> (mandatory for KYC)</li>
+        <li><b>PAN Card</b> (mandatory)</li>
+        <li>Voter ID / Passport / Driving License (if asked)</li>
+        <li>Utility Bill / Rent Agreement / Bank Passbook (for address)</li>
+      </ul>
+      <p class="text-xs text-gray-500 mt-4">KYC verification is done digitally via Aadhaar XML/eKYC & PAN validation.</p>
+    </section>
+
+    <!-- Income & Employment -->
+    <section class="bg-white card p-6">
+      <h2 class="text-2xl font-bold">Income & Employment Proof</h2>
+      <ul class="mt-4 space-y-2 text-gray-700 list-disc ml-5">
+        <li><b>Salaried:</b> Last 3 months’ salary slips</li>
+        <li><b>Salaried:</b> Last 3–6 months’ bank statement</li>
+        <li><b>Self-employed:</b> Last 6–12 months’ bank statement</li>
+        <li><b>Self-employed:</b> GST / Shop Act / Business proof</li>
+        <li>ITR or Form-16 (if requested by lender)</li>
+      </ul>
+      <p class="text-xs text-gray-500 mt-4">Eligibility depends on stable income flow & clean repayment history.</p>
+    </section>
+
+    <!-- Additional -->
+    <section class="bg-white card p-6 md:col-span-2">
+      <h2 class="text-2xl font-bold">Additional Requirements</h2>
+      <ul class="mt-4 space-y-2 text-gray-700 list-disc ml-5">
+        <li>Passport-size photograph (for record)</li>
+        <li>Selfie (for online eKYC match)</li>
+        <li>Active mobile number & email (for OTP & communication)</li>
+        <li>Cancelled cheque or bank passbook copy (for loan disbursal)</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-6 text-[12px] text-gray-500 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div>© <span id="yr"></span> SmartCash Finance</div>
+      <div class="flex gap-4">
+        <a class="text-blue-600" href="privacy.html">Privacy</a>
+        <a class="text-blue-600" href="terms.html">Terms</a>
+        <a class="text-blue-600" href="fees.html">Fees & Charges</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // year
+  document.getElementById('yr').textContent=new Date().getFullYear();
+
+  // mobile menu
+  document.getElementById('menuBtn')?.addEventListener('click',()=>{
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+
+  // active nav
+  const path=(location.pathname.split('/').pop()||'documents.html');
+  document.querySelectorAll('nav a.nav-link').forEach(a=>{
+    if(a.getAttribute('href')===path || (path===''&&a.getAttribute('href')==='documents.html')){
+      a.classList.add('nav-active');
+    }
+  });
+</script>
+</body>
+</html>

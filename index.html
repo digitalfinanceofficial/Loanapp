@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SmartCash Finance — Instant Personal Loans up to ₹10 Lakh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#0A2F33; --brand:#1f5d63; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .teal-dots{
+      background:
+        radial-gradient(circle at 12px 12px, rgba(255,255,255,.08) 2px, transparent 2.6px) 0 0/24px 24px,
+        var(--brand);
+    }
+    .nav-link{padding:.5rem 1rem;border-radius:9999px}
+    .nav-active{background:#0A2F33;color:#fff !important}
+    .err{display:none}
+    .has-error .err{display:block}
+    /* testimonial carousel */
+    .snap-x{scroll-snap-type:x mandatory}
+    .snap-start{scroll-snap-align:start}
+  </style>
+</head>
+<body class="bg-white text-gray-900">
+
+  <!-- NAVBAR -->
+  <header class="border-b bg-white sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.png" alt="SmartCash Logo" class="w-14 h-14 rounded-lg">
+        <div>
+          <div class="text-2xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+          <div class="text-[13px] tracking-widest text-blue-600 uppercase">Finance</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-2 text-sm">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="loan-products.html" class="nav-link">Products</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="calculator.html" class="nav-link">EMI Calculator</a>
+        <a href="status.html" class="nav-link">Status Check</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Top EMI promo ribbon -->
+    <div class="bg-[#0b3a3f] text-gray-100">
+      <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
+        <span class="opacity-90">Estimate your EMI before applying — plan the amount & tenure that fits your budget.</span>
+        <a href="calculator.html" class="inline-flex items-center rounded-full bg-white text-[#0b3a3f] px-4 py-1.5 font-semibold">
+          Open EMI Calculator
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+        <a class="py-2 border-b" href="index.html">Home</a>
+        <a class="py-2 border-b" href="loan-products.html">Products</a>
+        <a class="py-2 border-b" href="about.html">About Us</a>
+        <a class="py-2 border-b" href="status.html">Status Check</a>
+        <a class="py-2" href="calculator.html">EMI Calculator</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden text-white teal-dots">
+    <div class="max-w-7xl mx-auto px-4 py-12 md:py-16 grid md:grid-cols-2 gap-10 items-center">
+      <div class="relative flex justify-center md:justify-start">
+        <img src="assets/girl.png" alt="SmartCash Representative"
+             class="w-[340px] md:w-[480px] h-auto drop-shadow-2xl select-none pointer-events-none">
+      </div>
+
+      <!-- heading + form -->
+      <div class="flex flex-col items-center md:items-start w-full">
+        <div class="w-full max-w-md">
+          <p class="uppercase text-white/85 text-xs tracking-widest">Welcome To SmartCash Finance</p>
+          <h1 class="mt-2 text-4xl md:text-5xl font-extrabold leading-tight">
+            Get Personal Loan of up to <span class="text-teal-200">₹10 Lakh</span>
+          </h1>
+          <p class="mt-3 text-white/90 text-lg">Quick approval • Transparent charges • 100% online process</p>
+        </div>
+
+        <!-- lead form (no red styling, only message) -->
+        <form id="leadForm" class="mt-6 w-full max-w-md bg-white text-gray-900 rounded-2xl shadow-2xl p-6 space-y-4" novalidate>
+          <div id="grpName">
+            <label class="text-sm font-medium">Full Name</label>
+            <input id="fName" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="Enter your Full Name" required>
+            <p class="err text-xs text-red-600 mt-1">Enter your full name.</p>
+          </div>
+
+          <div id="grpEmail">
+            <label class="text-sm font-medium">Email</label>
+            <input id="fEmail" type="email" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="Enter your Email" required>
+            <p class="err text-xs text-red-600 mt-1">Enter a valid email address.</p>
+          </div>
+
+          <div id="grpMobile">
+            <label class="text-sm font-medium">Mobile Number</label>
+            <div class="mt-1 flex">
+              <span id="fDial" class="inline-flex items-center px-3 rounded-l-lg border border-r-0 bg-gray-50 text-gray-600 select-none">+91</span>
+              <input id="fMobile" inputmode="numeric" maxlength="10" class="w-full border rounded-r-lg px-3 py-2" placeholder="Mobile Number" required>
+            </div>
+            <p class="err text-xs text-red-600 mt-1">Enter a valid 10-digit number.</p>
+          </div>
+
+          <button id="applyBtn"
+            class="block w-full text-center rounded-full bg-gray-300 text-gray-600 py-3 font-semibold cursor-not-allowed transition active:scale-[.98] shadow"
+            disabled>Apply Now</button>
+          <p class="text-[11px] text-gray-500 text-center">
+            By applying you agree to our <a href="terms.html" class="underline">Terms</a> & <a href="privacy.html" class="underline">Privacy Policy</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div><div class="text-2xl font-extrabold">60 Lakh+</div><div class="text-sm text-gray-600">Loan Disbursed</div></div>
+      <div><div class="text-2xl font-extrabold">2+ Years</div><div class="text-sm text-gray-600">Experience</div></div>
+      <div><div class="text-2xl font-extrabold">56+</div><div class="text-sm text-gray-600">Business Partners</div></div>
+      <div><div class="text-2xl font-extrabold">100%</div><div class="text-sm text-gray-600">Happy Clients</div></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="max-w-7xl mx-auto px-6 py-14">
+    <h2 class="text-2xl font-bold text-center mb-8">How It Works</h2>
+    <div class="grid md:grid-cols-4 gap-6 text-center">
+      <div class="p-6 rounded-2xl border"><div class="font-semibold">1) Check Eligibility</div><p class="text-sm text-gray-600 mt-2">Tell us your details & income.</p></div>
+      <div class="p-6 rounded-2xl border"><div class="font-semibold">2) Apply Online</div><p class="text-sm text-gray-600 mt-2">Fill the quick application form.</p></div>
+      <div class="p-6 rounded-2xl border"><div class="font-semibold">3) Upload KYC</div><p class="text-sm text-gray-600 mt-2">Aadhaar, PAN & selfie.</p></div>
+      <div class="p-6 rounded-2xl border"><div class="font-semibold">4) Get Disbursal</div><p class="text-sm text-gray-600 mt-2">Funds to your bank account.</p></div>
+    </div>
+  </section>
+
+  <!-- DOCUMENTS REQUIRED -->
+  <section class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6 py-14">
+      <h2 class="text-2xl font-bold text-center mb-8">Documents Required</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl shadow"><div class="font-semibold">Identity</div><p class="text-sm text-gray-600 mt-1">Aadhaar & PAN</p></div>
+        <div class="bg-white p-6 rounded-2xl shadow"><div class="font-semibold">Address</div><p class="text-sm text-gray-600 mt-1">Aadhaar / Utility bill</p></div>
+        <div class="bg-white p-6 rounded-2xl shadow"><div class="font-semibold">Income</div><p class="text-sm text-gray-600 mt-1">Salary slip / Bank statement</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS: horizontal scroll -->
+  <section class="max-w-7xl mx-auto px-6 py-14">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold">What our Customers are saying</h2>
+      <div class="text-sm text-gray-500">Swipe to see more →</div>
+    </div>
+    <div class="overflow-x-auto snap-x scrollbar-thin">
+      <div class="flex gap-4 min-w-full">
+        <!-- 8 cards -->
+        <article class="snap-start min-w-[290px] max-w-[290px] p-5 rounded-2xl border bg-white">
+          <div>⭐️⭐️⭐️⭐️⭐️</div>
+          <p class="text-sm text-gray-600 mt-2">“Fast approval and smooth process. Money came in 24 hours.”</p>
+          <div class="text-xs mt-3 text-gray-500">— Mohit Jain</div>
+        </article>
+        <article class="snap-start min-w-[290px] max-w-[290px] p-5 rounded-2xl border bg-white">
+          <div>⭐️⭐️⭐️⭐️</div>
+          <p class="text-sm text-gray-600 mt-2">“Charges clear thay, app UI simple. Support ne help ki.”</p>
+          <div class="text-xs mt-3 text-gray-500">— Jyoti Rastogi</div>
+        </article>
+        <article class="snap-start min-w-[290px] max-w-[290px] p-5 rounded-2xl border bg-white">
+          <div>⭐️⭐️⭐️⭐️⭐️</div>
+          <p class="text-sm text-gray-600 mt-2">“Business ke liye loan mila, documents minimal.”</p>
+          <div class="text-xs mt-3 text-gray-500">— Shariq Ibrahim</div>
+        </article>
+        <article class="snap-start min-w-[290px] max-w-[290px] p-5 rounded-2xl border bg-white">
+          <div>⭐️⭐️⭐️⭐️⭐️</div>
+          <p class="text-sm text-gray-600 mt-2">“Underwriting quick. KYC online hi ho gaya.”</p>
+          <div class="text-xs mt-3 text-gray-500">— Riya Kapoor</div>
+        </article>
+        <article class="snap-start min-w-[290px] max-w-[290px] p-5 rounded-2xl border bg-white">
+          <div>⭐️⭐️⭐️⭐️</div>
+          <p class="text-sm text-gray-600 mt-2">“EMI calculator se pehle plan kar paya, helpful.”</p>
+          <div class="text-xs mt-3 text-gray-500">— Aditya S.</div>
+        </article>
+        <article class="snap-start min-w-[290px] max-w-[290px] p-5 rounded-2xl border bg-white">
+          <div>⭐️⭐️⭐️⭐️⭐️</div>
+          <p class="text-sm text-gray-600 mt-2">“Transparent charges. Team ne timely update diya.”</p>
+          <div class="text-xs mt-3 text-gray-500">— Neha Verma</div>
+        </article>
+        <article class="snap-start min-w-[290px] max-w-[290px] p-5 rounded-2xl border bg-white">
+          <div>⭐️⭐️⭐️⭐️</div>
+          <p class="text-sm text-gray-600 mt-2">“Disbursal on time, overall good experience.”</p>
+          <div class="text-xs mt-3 text-gray-500">— Karan M.</div>
+        </article>
+        <article class="snap-start min-w-[290px] max-w-[290px] p-5 rounded-2xl border bg-white">
+          <div>⭐️⭐️⭐️⭐️⭐️</div>
+          <p class="text-sm text-gray-600 mt-2">“Support team responsive—recommend!”</p>
+          <div class="text-xs mt-3 text-gray-500">— Priya K.</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEES & CHARGES -->
+  <section class="max-w-7xl mx-auto px-6 py-14">
+    <h2 class="text-2xl font-bold text-center mb-8">Fees & Charges (Indicative)</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-2xl border"><div class="font-semibold">Interest (APR)</div><p class="text-sm text-gray-600 mt-1">12% – 36% p.a. • risk-based</p></div>
+      <div class="p-6 rounded-2xl border"><div class="font-semibold">Processing Fee</div><p class="text-sm text-gray-600 mt-1">Up to 3% of loan amount</p></div>
+      <div class="p-6 rounded-2xl border"><div class="font-semibold">Foreclosure/Delay</div><p class="text-sm text-gray-600 mt-1">As per policy & lender T&C</p></div>
+    </div>
+    <p class="text-xs text-gray-500 mt-4 text-center">Example: ₹1,00,000 over 24 months @ 18% p.a. → EMI ≈ ₹4,992. Actual rates depend on profile.</p>
+  </section>
+
+  <!-- CTA: EMI CALCULATOR -->
+  <section class="bg-blue-700 text-white">
+    <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h3 class="text-2xl font-extrabold">Estimate your EMI before applying</h3>
+        <p class="text-white/90 mt-2">Choose loan amount & tenure to preview your monthly instalment instantly.</p>
+      </div>
+      <div class="text-right">
+        <a href="calculator.html" class="inline-block bg-white text-blue-700 font-semibold px-6 py-3 rounded-xl">Go to EMI Calculator</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER (unchanged from your pro footer) -->
+  <footer class="bg-[#0b3a3f] text-gray-200">
+    <div class="text-[12px] text-gray-300/90 border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-6 py-3 text-center md:text-left leading-relaxed">
+        Starting interest rate varies by profile; loans subject to KYC & income verification. T&C apply.
+        Example: ₹1,00,000 @ 18% p.a. for 24 months → EMI ≈ ₹4,992. Actual APR & charges depend on profile.
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-10 grid gap-10 md:grid-cols-3">
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+        <ul class="space-y-3 text-[15px]">
+          <li><a class="hover:text-white/90 transition" href="index.html">Home</a></li>
+          <li><a class="hover:text-white/90 transition" href="apply.html">Apply Now</a></li>
+          <li><a class="hover:text-white/90 transition" href="about.html">About Us</a></li>
+          <li><a class="hover:text-white/90 transition" href="contact.html">Contact Us</a></li>
+          <li><a class="hover:text-white/90 transition" href="calculator.html">Loan EMI Calculator</a></li>
+          <li><a class="hover:text-white/90 transition" href="fees.html">Fees & Charges</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Other Links</h3>
+        <ul class="space-y-3 text-[15px]">
+          <li><a class="hover:text-white/90 transition" href="faq.html">FAQ</a></li>
+          <li><a class="hover:text-white/90 transition" href="documents.html">Documents Required</a></li>
+          <li><a class="hover:text-white/90 transition" href="privacy.html">Privacy Policy</a></li>
+          <li><a class="hover:text-white/90 transition" href="terms.html">Terms & Conditions</a></li>
+          <li><a class="hover:text-white/90 transition" href="terms-of-use.html">Terms of Use</a></li>
+          <li><a class="hover:text-white/90 transition" href="refund.html">Refund Policy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Support</h3>
+        <div class="space-y-2 text-[15px]">
+          <p><a class="hover:text-white/90 transition" href="mailto:support@smartcashfinance.in">support@smartcashfinance.in</a></p>
+          <p>573, 3rd Floor, Main Road, Chirag, New Delhi — 110017</p>
+          <p>Mon–Sat: 10:00 AM – 6:00 PM</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10">
+      <div class="max-w-7xl mx-auto px-6 py-10">
+        <h4 class="text-lg font-semibold mb-3">Grievance Redressal</h4>
+        <p class="text-sm text-gray-300 leading-6">
+          We adhere to RBI directives and maintain a dedicated Grievance Redressal Cell.
+          Write to <a href="mailto:grievance@smartcashfinance.in" class="underline hover:text-white/90">grievance@smartcashfinance.in</a>.
+          We strive to resolve issues within 5 working days.
+        </p>
+        <p class="text-[13px] text-gray-400 mt-4">
+          SmartCash Finance is a loan service platform partnering with RBI-registered NBFCs/Banks. Loans are at lender’s discretion, subject to eligibility and verification.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-[#082e31]">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3 text-[12.5px] text-gray-300">
+        <div>© <span id="yr"></span> SmartCash Finance. All rights reserved.</div>
+        <div class="flex gap-4">
+          <a class="hover:text-white/90" href="privacy.html">Privacy</a>
+          <span class="opacity-40">|</span>
+          <a class="hover:text-white/90" href="terms.html">Terms</a>
+          <span class="opacity-40">|</span>
+          <a class="hover:text-white/90" href="status.html">Status Check</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // mobile menu
+    document.getElementById('menuBtn')?.addEventListener('click', () =>
+      document.getElementById('mobileMenu').classList.toggle('hidden')
+    );
+
+    // active nav pill
+    const path = (location.pathname.split('/').pop() || 'index.html');
+    document.querySelectorAll('nav a.nav-link').forEach(a=>{
+      const href=a.getAttribute('href');
+      if(href===path || (path===''&&href==='index.html')) a.classList.add('nav-active');
+    });
+
+    // ----- Lead form validation (no red styling, only messages) -----
+    const nameI = document.getElementById('fName');
+    const emailI = document.getElementById('fEmail');
+    const mobI   = document.getElementById('fMobile');
+    const applyBtn = document.getElementById('applyBtn');
+    const grpName  = document.getElementById('grpName');
+    const grpEmail = document.getElementById('grpEmail');
+    const grpMobile= document.getElementById('grpMobile');
+
+    const isName   = v => v.trim().length >= 3;
+    const isEmail  = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+    const isMobile = v => /^[6-9]\d{9}$/.test(v.trim());
+    const titleCase= s => s.toLowerCase().split(/\s+/).filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+
+    function setMsg(group, bad){ group.classList.toggle('has-error', bad); }
+
+    function validate(show=false){
+      const okN=isName(nameI.value), okE=isEmail(emailI.value), okM=isMobile(mobI.value);
+      if(show){ setMsg(grpName,!okN); setMsg(grpEmail,!okE); setMsg(grpMobile,!okM); }
+      const ok=okN&&okE&&okM;
+      applyBtn.disabled=!ok;
+      applyBtn.className = ok
+        ? "block w-full text-center rounded-full bg-[#0A2F33] hover:bg-[#062327] text-white py-3 font-semibold transition active:scale-[.98] shadow-lg"
+        : "block w-full text-center rounded-full bg-gray-300 text-gray-600 py-3 font-semibold cursor-not-allowed transition shadow";
+      return ok;
+    }
+    [nameI,emailI,mobI].forEach(el=>{
+      el.addEventListener('input', ()=>validate(false));
+      el.addEventListener('blur',  ()=>validate(true));
+    });
+    validate(false);
+
+    // submit
+    applyBtn.addEventListener('click', e=>{
+      e.preventDefault();
+      if(!validate(true)) return;
+      const lead={ name:titleCase(nameI.value), email:emailI.value.trim().toLowerCase(), mobile:"+91"+mobI.value.trim(), ts:new Date().toISOString() };
+      localStorage.setItem('scf_lead', JSON.stringify(lead));
+      window.location.href='apply.html';
+    });
+  </script>
+</body>
+</html>

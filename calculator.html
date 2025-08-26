@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>EMI Calculator — SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#0A2F33; --brand:#1f5d63; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .nav-link{padding:.5rem 1rem;border-radius:9999px}
+    .nav-active{background:#0A2F33;color:#fff !important}
+    .teal-dots{
+      background:
+        radial-gradient(circle at 12px 12px, rgba(255,255,255,.08) 2px, transparent 2.6px) 0 0/24px 24px,
+        var(--brand);
+    }
+    /* sliders */
+    input[type="range"]{-webkit-appearance:none;height:6px;border-radius:9999px;background:#e5e7eb}
+    input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;height:18px;width:18px;border-radius:9999px;background:#0A2F33}
+    /* left-card scroll */
+    .card-scroll{max-height:72vh;overflow:auto;scrollbar-width:thin}
+    .card-scroll::-webkit-scrollbar{height:6px;width:6px}
+    .card-scroll::-webkit-scrollbar-thumb{background:#c7ccd1;border-radius:9999px}
+  </style>
+</head>
+<body class="bg-white text-gray-900">
+
+  <!-- NAVBAR -->
+  <header class="border-b bg-white sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.png" alt="SmartCash Logo" class="w-14 h-14 rounded-lg">
+        <div>
+          <div class="text-2xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+          <div class="text-[13px] tracking-widest text-blue-600 uppercase">Finance</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-2 text-sm">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="loan-products.html" class="nav-link">Products</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="status.html" class="nav-link">Status Check</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+        <a class="py-2 border-b" href="index.html">Home</a>
+        <a class="py-2 border-b" href="loan-products.html">Products</a>
+        <a class="py-2 border-b" href="about.html">About Us</a>
+        <a class="py-2 border-b" href="status.html">Status Check</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="teal-dots text-white">
+    <div class="max-w-7xl mx-auto px-6 py-10 md:py-14">
+      <h1 class="text-3xl md:text-5xl font-extrabold">EMI Calculator</h1>
+      <p class="mt-3 text-white/90">Plan loan amount, tenure and rate to estimate your monthly EMI.</p>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <main class="max-w-7xl mx-auto px-6 py-10 grid lg:grid-cols-2 gap-8">
+    <!-- Inputs -->
+    <section class="bg-white rounded-2xl shadow-xl p-6 card-scroll">
+      <h2 class="text-xl font-bold mb-4">Enter Loan Details</h2>
+
+      <!-- amount -->
+      <div class="mb-6">
+        <div class="flex items-end justify-between gap-3">
+          <label class="font-medium">Loan Amount</label>
+          <input id="amtInput" type="text" class="w-44 text-right border rounded-lg px-3 py-1.5"
+                 value="500000" aria-label="Loan amount (₹)"/>
+        </div>
+        <input id="amt" type="range" min="10000" max="2500000" step="10000" value="500000" class="w-full mt-3">
+        <div class="flex justify-between text-xs text-gray-500 mt-1">
+          <span>₹10,000</span><span>₹25,00,000</span>
+        </div>
+      </div>
+
+      <!-- rate -->
+      <div class="mb-6">
+        <div class="flex items-end justify-between gap-3">
+          <label class="font-medium">Interest Rate (APR)</label>
+          <input id="rateInput" type="number" class="w-28 text-right border rounded-lg px-3 py-1.5"
+                 value="18" step="0.1" min="5" max="48" aria-label="Annual rate (%)"/>
+        </div>
+        <input id="rate" type="range" min="5" max="48" step="0.1" value="18" class="w-full mt-3">
+        <div class="flex justify-between text-xs text-gray-500 mt-1">
+          <span>5%</span><span>48%</span>
+        </div>
+      </div>
+
+      <!-- tenure -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between">
+          <label class="font-medium">Tenure</label>
+          <div class="flex items-center gap-2">
+            <button id="yrBtn" class="px-3 py-1.5 text-sm rounded-full border bg-gray-100">Years</button>
+            <button id="moBtn" class="px-3 py-1.5 text-sm rounded-full border">Months</button>
+          </div>
+        </div>
+        <input id="tenure" type="range" min="1" max="6" step="0.5" value="2" class="w-full mt-3">
+        <div class="flex justify-between text-xs text-gray-500 mt-1">
+          <span>0.5 yr</span><span>6 yrs</span>
+        </div>
+        <p class="mt-2 text-sm text-gray-600"><span id="tenureLabel">2.0 years</span> (<span id="tenureMonths">24</span> months)</p>
+      </div>
+
+      <div class="flex items-center gap-3 pb-2">
+        <a href="apply.html"
+           class="inline-flex justify-center items-center gap-2 px-5 py-3 rounded-full font-semibold text-white bg-[#0A2F33] hover:bg-[#062327] active:scale-[.98]">
+          Apply Now
+        </a>
+        <button id="resetBtn" class="px-4 py-3 rounded-full border font-semibold">Reset</button>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="bg-white rounded-2xl shadow-xl p-6 lg:sticky lg:top-24 h-fit">
+      <h2 class="text-xl font-bold mb-4">Result</h2>
+
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="rounded-xl border p-4">
+          <div class="text-sm text-gray-600">Monthly EMI</div>
+          <div id="emi" class="text-2xl font-extrabold mt-1">₹ —</div>
+        </div>
+        <div class="rounded-xl border p-4">
+          <div class="text-sm text-gray-600">Total Interest</div>
+          <div id="interest" class="text-2xl font-extrabold mt-1">₹ —</div>
+        </div>
+        <div class="rounded-xl border p-4">
+          <div class="text-sm text-gray-600">Total Payment</div>
+          <div id="total" class="text-2xl font-extrabold mt-1">₹ —</div>
+        </div>
+      </div>
+
+      <!-- summary line -->
+      <p id="summary" class="mt-4 text-sm text-gray-600">—</p>
+
+      <!-- visual split bar -->
+      <div class="mt-5">
+        <div class="flex items-center justify-between mb-1 text-xs text-gray-600">
+          <span>Principal</span><span>Interest</span>
+        </div>
+        <div class="w-full h-4 bg-gray-100 rounded-full overflow-hidden">
+          <div id="pBar" class="h-4 bg-emerald-500" style="width:50%"></div>
+        </div>
+        <div class="mt-1 text-xs text-gray-600">
+          <span id="pPct">50%</span> principal • <span id="iPct">50%</span> interest
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER (same pro footer as before) -->
+  <footer class="bg-[#0b3a3f] text-gray-200">
+    <div class="text-[12px] text-gray-300/90 border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-6 py-3 text-center md:text-left leading-relaxed">
+        Starting interest rate varies by profile; loans subject to KYC & income verification. T&C apply.
+        Example: ₹1,00,000 @ 18% p.a. for 24 months → EMI ≈ ₹4,992. Actual APR & charges depend on profile.
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-10 grid gap-10 md:grid-cols-3">
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+        <ul class="space-y-3 text-[15px]">
+          <li><a class="hover:text-white/90 transition" href="index.html">Home</a></li>
+          <li><a class="hover:text-white/90 transition" href="apply.html">Apply Now</a></li>
+          <li><a class="hover:text-white/90 transition" href="about.html">About Us</a></li>
+          <li><a class="hover:text-white/90 transition" href="contact.html">Contact Us</a></li>
+          <li><a class="hover:text-white/90 transition" href="calculator.html">Loan EMI Calculator</a></li>
+          <li><a class="hover:text-white/90 transition" href="fees.html">Fees & Charges</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Other Links</h3>
+        <ul class="space-y-3 text-[15px]">
+          <li><a class="hover:text-white/90 transition" href="faq.html">FAQ</a></li>
+          <li><a class="hover:text-white/90 transition" href="documents.html">Documents Required</a></li>
+          <li><a class="hover:text-white/90 transition" href="privacy.html">Privacy Policy</a></li>
+          <li><a class="hover:text-white/90 transition" href="terms.html">Terms & Conditions</a></li>
+          <li><a class="hover:text-white/90 transition" href="terms-of-use.html">Terms of Use</a></li>
+          <li><a class="hover:text-white/90 transition" href="refund.html">Refund Policy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Support</h3>
+        <div class="space-y-2 text=[15px]">
+          <p><a class="hover:text-white/90 transition" href="mailto:support@smartcashfinance.in">support@smartcashfinance.in</a></p>
+          <p>573, 3rd Floor, Main Road, Chirag, New Delhi — 110017</p>
+          <p>Mon–Sat: 10:00 AM – 6:00 PM</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10">
+      <div class="max-w-7xl mx-auto px-6 py-10">
+        <h4 class="text-lg font-semibold mb-3">Grievance Redressal</h4>
+        <p class="text-sm text-gray-300 leading-6">
+          We adhere to RBI directives and maintain a dedicated Grievance Redressal Cell.
+          Write to <a href="mailto:grievance@smartcashfinance.in" class="underline hover:text-white/90">grievance@smartcashfinance.in</a>.
+          We strive to resolve issues within 5 working days.
+        </p>
+        <p class="text-[13px] text-gray-400 mt-4">
+          SmartCash Finance partners with RBI-registered NBFCs/Banks. Loans are at lender’s discretion, subject to eligibility and verification.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-[#082e31]">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3 text-[12.5px] text-gray-300">
+        <div>© <span id="yr"></span> SmartCash Finance. All rights reserved.</div>
+        <div class="flex gap-4">
+          <a class="hover:text-white/90" href="privacy.html">Privacy</a>
+          <span class="opacity-40">|</span>
+          <a class="hover:text-white/90" href="terms.html">Terms</a>
+          <span class="opacity-40">|</span>
+          <a class="hover:text-white/90" href="status.html">Status Check</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // year + mobile menu + active nav
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('hidden'));
+  const path=(location.pathname.split('/').pop()||'calculator.html');
+  document.querySelectorAll('nav a.nav-link').forEach(a=>{ if(a.getAttribute('href')===path) a.classList.add('nav-active'); });
+
+  // ---------- Calculator ----------
+  const nf = new Intl.NumberFormat('en-IN',{maximumFractionDigits:0});
+  const currency = v => '₹ ' + nf.format(Math.round(v));
+
+  const amt=document.getElementById('amt');
+  const amtInput=document.getElementById('amtInput');
+  const rate=document.getElementById('rate');
+  const rateInput=document.getElementById('rateInput');
+  const tenure=document.getElementById('tenure');
+  const yrBtn=document.getElementById('yrBtn');
+  const moBtn=document.getElementById('moBtn');
+
+  const tenureLabel=document.getElementById('tenureLabel');
+  const tenureMonths=document.getElementById('tenureMonths');
+
+  const emiEl=document.getElementById('emi');
+  const interestEl=document.getElementById('interest');
+  const totalEl=document.getElementById('total');
+
+  const pBar=document.getElementById('pBar');
+  const pPctEl=document.getElementById('pPct');
+  const iPctEl=document.getElementById('iPct');
+  const summary=document.getElementById('summary');
+
+  function sanitizeAmount(str){ return String(str).replace(/[^\d]/g,''); }
+
+  function syncInputs(){
+    const raw = sanitizeAmount(amtInput.value || amt.value);
+    const clamp = Math.min(Math.max(+raw||0, +amt.min), +amt.max);
+    amt.value = clamp;
+    amtInput.value = nf.format(clamp);
+    rate.value = rateInput.value;
+  }
+
+  function updateTenureLabel(){
+    const years = parseFloat(tenure.value);
+    const months = Math.round(years*12);
+    tenureLabel.textContent = years.toFixed(1) + ' years';
+    tenureMonths.textContent = months;
+  }
+
+  function calc(){
+    syncInputs(); updateTenureLabel();
+
+    const P=+amt.value;
+    const annual=parseFloat(rate.value);
+    const n=Math.round(parseFloat(tenure.value)*12);
+    const r=annual/12/100;
+    if(P<=0||annual<=0||n<=0){return}
+
+    const pow=Math.pow(1+r,n);
+    const emi=P*r*pow/(pow-1);
+    const total=emi*n;
+    const interest=total-P;
+
+    emiEl.textContent=currency(emi);
+    interestEl.textContent=currency(interest);
+    totalEl.textContent=currency(total);
+
+    // visual bar + summary
+    const iPct=Math.round(interest/total*100);
+    const pPct=100-iPct;
+    pBar.style.width=pPct+'%';
+    pPctEl.textContent=pPct+'%';
+    iPctEl.textContent=iPct+'%';
+    summary.textContent=`Tenure: ${n} months • Rate: ${annual}% p.a. • Principal: ${currency(P)}`;
+  }
+
+  // listeners
+  [amt,rate,tenure].forEach(el=>el.addEventListener('input',calc));
+  amtInput.addEventListener('input',calc);
+  amtInput.addEventListener('blur',()=>{ amtInput.value = nf.format(+sanitizeAmount(amtInput.value)||0); });
+  rateInput.addEventListener('input',calc);
+
+  yrBtn.addEventListener('click',e=>{
+    e.preventDefault();
+    yrBtn.classList.add('bg-gray-100'); moBtn.classList.remove('bg-gray-100');
+    tenure.min=0.5; tenure.max=6; tenure.step=0.5;
+    if(+tenure.value<0.5) tenure.value=2;
+    calc();
+  });
+  moBtn.addEventListener('click',e=>{
+    e.preventDefault();
+    yrBtn.classList.remove('bg-gray-100'); moBtn.classList.add('bg-gray-100');
+    // show months in label (internal value continues as years)
+    updateTenureLabel(); calc();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click',()=>{
+    amt.value=500000; rate.value=18; rateInput.value=18; tenure.value=2;
+    amtInput.value=nf.format(500000);
+    yrBtn.classList.add('bg-gray-100'); moBtn.classList.remove('bg-gray-100');
+    calc();
+  });
+
+  // init
+  amtInput.value=nf.format(500000);
+  calc();
+</script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Apply — Step 1: Personal Details | SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#0A2F33; --brand:#1f5d63; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .nav-link{padding:.5rem 1rem;border-radius:9999px}
+    .nav-active{background:#0A2F33;color:#fff !important}
+    .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.06)}
+    .err{display:none}
+    .has-error .err{display:block}
+    .teal-dots{
+      background:
+        radial-gradient(circle at 12px 12px, rgba(255,255,255,.07) 2px, transparent 2.6px) 0 0/24px 24px,
+        var(--brand);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- NAVBAR -->
+  <header class="border-b bg-white sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.png" class="w-12 h-12 rounded-lg" alt="SmartCash"/>
+        <div>
+          <div class="text-xl font-extrabold text-blue-700">SmartCash</div>
+          <div class="text-[11px] tracking-widest text-blue-600 uppercase">Finance</div>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-2 text-sm">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="loan-products.html" class="nav-link">Products</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="status.html" class="nav-link">Status Check</a>
+      </nav>
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+        <a class="py-2 border-b" href="index.html">Home</a>
+        <a class="py-2 border-b" href="loan-products.html">Products</a>
+        <a class="py-2 border-b" href="about.html">About Us</a>
+        <a class="py-2 border-b" href="contact.html">Contact</a>
+        <a class="py-2" href="status.html">Status Check</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PROGRESS STRIP -->
+  <section class="teal-dots text-white">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-extrabold">Apply — Step 1 of 4: Personal Details</h1>
+        <p class="text-white/90 mt-1">Please provide your basic information.</p>
+      </div>
+      <div class="hidden md:flex items-center gap-2 text-sm">
+        <div class="h-2 w-24 rounded bg-white/30"><div class="h-2 w-1/4 rounded bg-white"></div></div>
+        <span>25%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <main class="max-w-5xl mx-auto px-6 py-8">
+    <form id="pform" class="bg-white card p-6 grid gap-6" novalidate>
+      <!-- Contact -->
+      <div>
+        <h2 class="text-xl font-bold">Contact</h2>
+        <div class="mt-4 grid md:grid-cols-2 gap-4">
+          <div id="gName">
+            <label class="text-sm font-medium">Full Name</label>
+            <input id="name" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="Full name" required>
+            <p class="err text-xs text-red-600 mt-1">Please enter your full name (min 3 chars).</p>
+          </div>
+          <div id="gEmail">
+            <label class="text-sm font-medium">Email</label>
+            <input id="email" type="email" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="name@example.com" required>
+            <p class="err text-xs text-red-600 mt-1">Enter a valid email.</p>
+          </div>
+          <div id="gMobile" class="md:col-span-2">
+            <label class="text-sm font-medium">Mobile Number</label>
+            <div class="mt-1 flex">
+              <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 bg-gray-50 text-gray-600 select-none">+91</span>
+              <input id="mobile" inputmode="numeric" maxlength="10" class="w-full border rounded-r-lg px-3 py-2" placeholder="10-digit mobile" required>
+            </div>
+            <p class="err text-xs text-red-600 mt-1">Enter a valid 10-digit mobile number.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal -->
+      <div>
+        <h2 class="text-xl font-bold">Personal Information</h2>
+        <div class="mt-4 grid md:grid-cols-3 gap-4">
+          <div id="gDob">
+            <label class="text-sm font-medium">Date of Birth</label>
+            <input id="dob" type="date" class="mt-1 w-full border rounded-lg px-3 py-2" required>
+            <p class="err text-xs text-red-600 mt-1">Age must be 18 years or above.</p>
+          </div>
+          <div>
+            <label class="text-sm font-medium">Gender</label>
+            <select id="gender" class="mt-1 w-full border rounded-lg px-3 py-2">
+              <option value="">Select</option>
+              <option>Male</option><option>Female</option><option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-sm font-medium">Marital Status</label>
+            <select id="marital" class="mt-1 w-full border rounded-lg px-3 py-2">
+              <option value="">Select</option>
+              <option>Single</option><option>Married</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Work & Income -->
+      <div>
+        <h2 class="text-xl font-bold">Work & Income</h2>
+        <div class="mt-4 grid md:grid-cols-3 gap-4">
+          <div id="gEmp">
+            <label class="text-sm font-medium">Employment Type</label>
+            <select id="employment" class="mt-1 w-full border rounded-lg px-3 py-2" required>
+              <option value="">Select</option>
+              <option>Salaried</option>
+              <option>Self-Employed</option>
+              <option>Freelancer</option>
+              <option>Student</option>
+              <option>Homemaker</option>
+              <option>Retired</option>
+            </select>
+            <p class="err text-xs text-red-600 mt-1">Please select employment type.</p>
+          </div>
+          <div id="gIncome">
+            <label class="text-sm font-medium">Monthly Income (₹)</label>
+            <input id="income" inputmode="numeric" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="e.g. 30000" required>
+            <p class="err text-xs text-red-600 mt-1">Minimum income should be ₹8,000.</p>
+          </div>
+          <div>
+            <label class="text-sm font-medium">Company / Business (optional)</label>
+            <input id="employer" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="Company/Business name">
+          </div>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div>
+        <h2 class="text-xl font-bold">Current Address</h2>
+        <div class="mt-4 grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm font-medium">Residence Type</label>
+            <select id="residence" class="mt-1 w-full border rounded-lg px-3 py-2">
+              <option value="">Select</option>
+              <option>Owned</option><option>Rented</option><option>Company Provided</option><option>With Family</option>
+            </select>
+          </div>
+          <div id="gPin">
+            <label class="text-sm font-medium">Pincode</label>
+            <input id="pincode" inputmode="numeric" maxlength="6" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="6-digit pincode" required>
+            <p class="err text-xs text-red-600 mt-1">Enter a valid 6-digit pincode.</p>
+          </div>
+          <div class="md:col-span-2">
+            <label class="text-sm font-medium">Address Line 1</label>
+            <input id="addr1" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="House/Street/Locality">
+          </div>
+          <div>
+            <label class="text-sm font-medium">City</label>
+            <input id="city" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="City">
+          </div>
+          <div>
+            <label class="text-sm font-medium">State</label>
+            <input id="state" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="State">
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer actions -->
+      <div class="flex items-center justify-between">
+        <p class="text-xs text-gray-500">By continuing, you agree to our <a href="terms.html" class="underline">Terms</a> & <a href="privacy.html" class="underline">Privacy Policy</a>.</p>
+        <button id="nextBtn" class="rounded-full bg-[#0A2F33] hover:bg-[#062327] text-white px-6 py-3 font-semibold">Save & Continue</button>
+      </div>
+      <div id="saveOk" class="hidden text-sm text-green-600 font-semibold">Saved! Taking you to KYC…</div>
+    </form>
+  </main>
+
+  <script>
+    // mobile menu
+    document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('hidden'));
+    // active nav
+    const path=(location.pathname.split('/').pop()||'apply.html');
+    document.querySelectorAll('nav a.nav-link').forEach(a=>{ if(a.getAttribute('href')===path) a.classList.add('nav-active'); });
+
+    // helpers
+    const $ = id => document.getElementById(id);
+    const toTitle = s => s.toLowerCase().split(/\s+/).filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+    const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+    const isMobile= v => /^[6-9]\d{9}$/.test(v.trim());
+    const isPincode=v => /^\d{6}$/.test(v.trim());
+
+    // groups for error messages
+    const G = { name:$('gName'), email:$('gEmail'), mobile:$('gMobile'), dob:$('gDob'), emp:$('gEmp'), income:$('gIncome'), pin:$('gPin') };
+    const F = { name:$('name'), email:$('email'), mobile:$('mobile'), dob:$('dob'), gender:$('gender'), marital:$('marital'),
+                employment:$('employment'), income:$('income'), employer:$('employer'),
+                residence:$('residence'), pincode:$('pincode'), addr1:$('addr1'), city:$('city'), state:$('state') };
+
+    function setErr(group, bad){ group.classList.toggle('has-error', bad); }
+    function ageFromDob(d){
+      const dob = new Date(d); if(isNaN(dob)) return 0;
+      const today=new Date(); let age=today.getFullYear()-dob.getFullYear();
+      const m=today.getMonth()-dob.getMonth(); if(m<0 || (m===0 && today.getDate()<dob.getDate())) age--;
+      return age;
+    }
+
+    // Prefill from saved data
+    (function prefill(){
+      try{
+        const lead = JSON.parse(localStorage.getItem('scf_lead')||'null');
+        const saved = JSON.parse(localStorage.getItem('scf_apply')||'null')?.personal;
+        const src = Object.assign({}, lead||{}, saved||{});
+        if(src.name) F.name.value = src.name;
+        if(src.email) F.email.value = src.email;
+        if(src.mobile){ F.mobile.value = (src.mobile+'').replace('+91',''); }
+        if(saved){
+          ['dob','gender','marital','employment','income','employer','residence','pincode','addr1','city','state']
+            .forEach(k=>{ if(saved[k]) F[k].value = saved[k]; });
+        }
+      }catch(_){}
+    })();
+
+    function validate(show){
+      const okName = F.name.value.trim().length>=3;
+      const okEmail= isEmail(F.email.value);
+      const okMob  = isMobile(F.mobile.value);
+      const okDob  = ageFromDob(F.dob.value)>=18;
+      const okEmp  = !!F.employment.value;
+      const income = parseInt(F.income.value.replace(/[^\d]/g,''))||0;
+      const okInc  = income>=8000;
+      const okPin  = isPincode(F.pincode.value);
+
+      if(show){
+        setErr(G.name, !okName);
+        setErr(G.email,!okEmail);
+        setErr(G.mobile,!okMob);
+        setErr(G.dob,  !okDob);
+        setErr(G.emp,  !okEmp);
+        setErr(G.income,!okInc);
+        setErr(G.pin,  !okPin);
+      }
+      return okName && okEmail && okMob && okDob && okEmp && okInc && okPin;
+    }
+
+    // live validation (messages only)
+    ['input','blur','change'].forEach(ev=>{
+      Object.values(F).forEach(el=> el.addEventListener(ev, ()=>validate(false)));
+    });
+
+    // submit
+    $('nextBtn').addEventListener('click', (e)=>{
+      e.preventDefault();
+      if(!validate(true)) return;
+
+      const payload = {
+        name: toTitle(F.name.value),
+        email: F.email.value.trim().toLowerCase(),
+        mobile: '+91'+F.mobile.value.trim(),
+        dob: F.dob.value,
+        gender: F.gender.value,
+        marital: F.marital.value,
+        employment: F.employment.value,
+        income: (F.income.value+'').replace(/[^\d]/g,''),
+        employer: F.employer.value.trim(),
+        residence: F.residence.value,
+        pincode: F.pincode.value.trim(),
+        addr1: F.addr1.value.trim(),
+        city: toTitle(F.city.value),
+        state: toTitle(F.state.value),
+        ts: new Date().toISOString()
+      };
+
+      // merge into scf_apply
+      const all = JSON.parse(localStorage.getItem('scf_apply')||'{}');
+      all.personal = payload;
+      localStorage.setItem('scf_apply', JSON.stringify(all));
+
+      // info bar and go next
+      document.getElementById('saveOk').classList.remove('hidden');
+      setTimeout(()=> location.href='apply-kyc.html', 600);
+    });
+  </script>
+</body>
+</html>

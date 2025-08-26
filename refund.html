@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Refund Policy — SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#0A2F33; --brand:#1f5d63; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .nav-link{padding:.5rem 1rem;border-radius:9999px}
+    .nav-active{background:#0A2F33;color:#fff !important}
+    .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.06)}
+    .sec h2{font-weight:700;font-size:1.25rem}
+    @media(min-width:768px){.sec h2{font-size:1.5rem}}
+    .sec p{color:#374151;margin-top:.5rem}
+    .sec ul{margin:.5rem 0 0 1.25rem;list-style:disc;color:#374151}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- NAVBAR -->
+  <header class="border-b bg-white sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.png" class="w-14 h-14 rounded-lg" alt="SmartCash"/>
+        <div>
+          <div class="text-2xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+          <div class="text-[13px] tracking-widest text-blue-600 uppercase">Finance</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-2 text-sm">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="loan-products.html" class="nav-link">Products</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="status.html" class="nav-link">Status Check</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+        <a class="py-2 border-b" href="index.html">Home</a>
+        <a class="py-2 border-b" href="loan-products.html">Products</a>
+        <a class="py-2 border-b" href="about.html">About Us</a>
+        <a class="py-2 border-b" href="status.html">Status Check</a>
+        <a class="py-2" href="calculator.html">EMI Calculator</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <section class="max-w-7xl mx-auto px-6 pt-10 pb-3">
+    <h1 class="text-3xl md:text-4xl font-extrabold">Refund Policy</h1>
+    <p class="text-gray-600 mt-2">Last updated: <span id="lastUpdated">25 Aug 2025</span></p>
+  </section>
+
+  <!-- CONTENT -->
+  <main class="max-w-7xl mx-auto px-6 pb-16 space-y-6">
+    <section class="card bg-white p-6 sec">
+      <h2>1) Processing Fees</h2>
+      <p>SmartCash Finance, as a loan service platform, charges processing/service fees as disclosed upfront before your loan application submission. These fees are non-refundable once the loan application has been processed.</p>
+    </section>
+
+    <section class="card bg-white p-6 sec">
+      <h2>2) Loan Disbursal</h2>
+      <p>Once a loan is approved and disbursed by our partner NBFC/Bank, refunds are not applicable on the loan amount or interest. Borrowers are required to repay as per the loan agreement signed with the lending partner.</p>
+    </section>
+
+    <section class="card bg-white p-6 sec">
+      <h2>3) Duplicate Payment</h2>
+      <p>In the event of a duplicate payment towards processing fee or charges due to technical error, the excess amount will be refunded to the original payment source within 7–10 working days after verification.</p>
+    </section>
+
+    <section class="card bg-white p-6 sec">
+      <h2>4) Cancellations</h2>
+      <p>You may cancel your loan application before submission at no cost. Once submitted, cancellation may not be possible and the applicable processing fees remain non-refundable.</p>
+    </section>
+
+    <section class="card bg-white p-6 sec">
+      <h2>5) Contact for Refunds</h2>
+      <p>If you believe you are entitled to a refund under this Policy, please reach us at:</p>
+      <ul>
+        <li>Email: <a class="text-blue-600" href="mailto:support@smartcashfinance.in">support@smartcashfinance.in</a></li>
+        <li>Grievance: <a class="text-blue-600" href="mailto:grievance@smartcashfinance.in">grievance@smartcashfinance.in</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-6 text-[12px] text-gray-500 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div>© <span id="yr"></span> SmartCash Finance</div>
+      <div class="flex gap-4">
+        <a class="text-blue-600" href="privacy.html">Privacy Policy</a>
+        <a class="text-blue-600" href="terms.html">Terms & Conditions</a>
+        <a class="text-blue-600" href="terms-of-use.html">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // footer year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // mobile menu toggle
+  document.getElementById('menuBtn')?.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+
+  // highlight active nav
+  const path=(location.pathname.split('/').pop()||'refund.html');
+  document.querySelectorAll('nav a.nav-link').forEach(a=>{
+    if(a.getAttribute('href')===path){ a.classList.add('nav-active'); }
+  });
+</script>
+</body>
+</html>

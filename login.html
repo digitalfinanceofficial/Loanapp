@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Login — SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}</style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
+    <h1 class="text-2xl font-extrabold text-center text-blue-700">SmartCash Login</h1>
+    <p class="text-center text-gray-500 mt-1">Check your loan status anytime</p>
+
+    <form class="mt-6 space-y-4" onsubmit="doLogin(event)">
+      <div>
+        <label class="text-sm font-medium">Mobile Number</label>
+        <input id="mobile" pattern="\d{10}" maxlength="10"
+          class="mt-1 w-full border rounded-lg px-3 py-2"
+          placeholder="Enter 10-digit mobile" required>
+      </div>
+      <div>
+        <label class="text-sm font-medium">OTP</label>
+        <div class="flex gap-2">
+          <input id="otp" type="password"
+            class="w-full border rounded-lg px-3 py-2"
+            placeholder="Enter OTP" required>
+          <button type="button"
+            onclick="sendOTP()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm">
+            Send OTP
+          </button>
+        </div>
+      </div>
+      <button class="w-full bg-[#0A2F33] hover:bg-[#062327] text-white py-3 rounded-lg font-semibold">Login</button>
+    </form>
+    <p class="mt-4 text-xs text-gray-500 text-center">By logging in, you agree to our <a href="terms.html" class="underline">Terms</a> & <a href="privacy.html" class="underline">Privacy Policy</a>.</p>
+  </div>
+
+<script>
+function sendOTP(){
+  alert("Dummy OTP sent: 1234");
+}
+function doLogin(e){
+  e.preventDefault();
+  const otp=document.getElementById('otp').value;
+  if(otp==="1234"){
+    window.location.href="status.html";
+  } else {
+    alert("Invalid OTP. Try again.");
+  }
+}
+</script>
+
+</body>
+</html>

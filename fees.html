@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Fees & Charges — SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#0A2F33; --brand:#1f5d63; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .nav-link{padding:.5rem 1rem;border-radius:9999px}
+    .nav-active{background:#0A2F33;color:#fff !important}
+    .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.06)}
+    .tag{background:#EFF6FF;color:#1D4ED8;padding:.25rem .5rem;border-radius:.5rem;font-size:.75rem;font-weight:600}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- NAVBAR -->
+  <header class="border-b bg-white sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.png" class="w-14 h-14 rounded-lg" alt="SmartCash"/>
+        <div>
+          <div class="text-2xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+          <div class="text-[13px] tracking-widest text-blue-600 uppercase">Finance</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-2 text-sm">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="loan-products.html" class="nav-link">Products</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="status.html" class="nav-link">Status Check</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+        <a class="py-2 border-b" href="index.html">Home</a>
+        <a class="py-2 border-b" href="loan-products.html">Products</a>
+        <a class="py-2 border-b" href="about.html">About Us</a>
+        <a class="py-2 border-b" href="status.html">Status Check</a>
+        <a class="py-2" href="calculator.html">EMI Calculator</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE HEAD -->
+  <section class="max-w-7xl mx-auto px-6 pt-10 pb-2">
+    <h1 class="text-3xl md:text-4xl font-extrabold">Fees & Charges</h1>
+    <p class="text-gray-700 mt-2">Transparent pricing for all SmartCash Finance products. All charges are subject to GST as applicable.</p>
+    <div class="mt-3 flex flex-wrap gap-2">
+      <span class="tag">Transparent</span>
+      <span class="tag">No Advance Fee</span>
+      <span class="tag">RBI-Guideline Compliant</span>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <main class="max-w-7xl mx-auto px-6 pb-14 grid lg:grid-cols-3 gap-8 mt-6">
+    <!-- Left: Summary cards -->
+    <section class="lg:col-span-1 space-y-4">
+      <div class="bg-white card p-5">
+        <div class="text-sm text-gray-500">Annual Percentage Rate (APR)</div>
+        <div class="text-2xl font-extrabold mt-1">12% – 36% p.a.</div>
+        <p class="text-sm text-gray-600 mt-2">Risk-based pricing decided by lending partners after KYC & underwriting.</p>
+      </div>
+      <div class="bg-white card p-5">
+        <div class="text-sm text-gray-500">Processing Fee</div>
+        <div class="text-2xl font-extrabold mt-1">Up to 3% + GST</div>
+        <p class="text-sm text-gray-600 mt-2">Deducted from disbursal; non-refundable once loan is disbursed.</p>
+      </div>
+      <div class="bg-white card p-5">
+        <div class="text-sm text-gray-500">Pre/Part-payment</div>
+        <div class="text-2xl font-extrabold mt-1">As per lender policy</div>
+        <p class="text-sm text-gray-600 mt-2">Some products allow early closure after a lock-in; nominal charges may apply.</p>
+      </div>
+    </section>
+
+    <!-- Right: Table -->
+    <section class="lg:col-span-2 bg-white card p-6">
+      <h2 class="text-xl font-bold">Standard Charges (Indicative)</h2>
+      <div class="overflow-x-auto mt-4">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-500 border-b">
+              <th class="py-2 pr-4">Item</th>
+              <th class="py-2 pr-4">Amount / Rate</th>
+              <th class="py-2">Notes</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y">
+            <tr>
+              <td class="py-3 pr-4 font-medium">Interest (APR)</td>
+              <td class="py-3 pr-4">12% – 36% per annum</td>
+              <td class="py-3">Risk-based; varies by profile, product & tenure.</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium">Processing Fee</td>
+              <td class="py-3 pr-4">Up to 3% of loan amount + GST</td>
+              <td class="py-3">Deducted from disbursal.</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium">Documentation / Convenience</td>
+              <td class="py-3 pr-4">₹0 – ₹999 + GST</td>
+              <td class="py-3">If applicable for specific products.</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium">Mandate Registration (eNACH/UPI)</td>
+              <td class="py-3 pr-4">₹0 – ₹200</td>
+              <td class="py-3">One-time debit mandate setup fee (if charged by partner).</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium">Bounce / Return</td>
+              <td class="py-3 pr-4">₹300 – ₹750 per instance</td>
+              <td class="py-3">If EMI auto-debit fails due to insufficient funds or bank issues.</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium">Late Payment</td>
+              <td class="py-3 pr-4">Up to 3% p.m. on overdue amount</td>
+              <td class="py-3">Calculated per day until dues are cleared.</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium">Foreclosure / Pre-closure</td>
+              <td class="py-3 pr-4">0% – 4% on principal outstanding</td>
+              <td class="py-3">As per lender policy & lock-in (generally 3–6 months).</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium">Part-payment</td>
+              <td class="py-3 pr-4">As per lender policy</td>
+              <td class="py-3">Where allowed; limits & fees vary.</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium">Statement / NOC / Letters</td>
+              <td class="py-3 pr-4">₹0 – ₹500</td>
+              <td class="py-3">Digital copies usually free; physical copy may be chargeable.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Example -->
+      <div class="mt-6 p-4 rounded-xl bg-gray-50">
+        <div class="font-semibold">Illustration</div>
+        <p class="text-sm text-gray-700 mt-1">
+          Example: On a personal loan of <b>₹1,00,000</b> for <b>24 months</b> at <b>18% p.a.</b>, the monthly EMI is
+          approximately <b>₹4,992</b>. Actual APR/EMI may differ based on your profile and lender policies.
+        </p>
+      </div>
+
+      <p class="text-xs text-gray-500 mt-6">
+        Notes: Charges above are indicative and may vary by product, customer profile, partner NBFC/Bank and city.
+        All fees are subject to change without prior notice. Taxes (GST) are additional wherever applicable.
+      </p>
+
+      <div class="mt-6">
+        <a href="calculator.html" class="inline-block bg-[#0A2F33] hover:bg-[#062327] text-white px-5 py-2.5 rounded-lg font-semibold">
+          Calculate your EMI
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-6 text-[12px] text-gray-500 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div>© <span id="yr"></span> SmartCash Finance</div>
+      <div class="flex gap-4">
+        <a class="text-blue-600" href="privacy.html">Privacy</a>
+        <a class="text-blue-600" href="terms.html">Terms</a>
+        <a class="text-blue-600" href="refund.html">Refund Policy</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // year
+  document.getElementById('yr').textContent=new Date().getFullYear();
+
+  // mobile menu
+  document.getElementById('menuBtn')?.addEventListener('click',()=>{
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+
+  // active nav highlight
+  const path=(location.pathname.split('/').pop()||'fees.html');
+  document.querySelectorAll('nav a.nav-link').forEach(a=>{
+    if(a.getAttribute('href')===path || (path==='' && a.getAttribute('href')==='fees.html')){
+      a.classList.add('nav-active');
+    }
+  });
+</script>
+</body>
+</html>
