@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Loan Offer — SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#0A2F33; --ok:#10b981; --muted:#e5e7eb; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.08)}
+    .step-dot{width:12px;height:12px;border-radius:9999px;background:#d1d5db;transition:background .3s ease}
+    .step-dot.done{background:var(--ok)}
+    .step-dot.active{background:#f59e0b}
+    .linkbar{height:6px;border-radius:9999px;background:var(--muted);overflow:hidden;position:relative}
+    .linkfill{height:100%;width:0;background:var(--ok);transition:width .8s ease}
+    .label{font-size:12px}
+    .note{font-size:12px;color:#6b7280}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+<!-- HEADER -->
+<header class="border-b bg-white sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="assets/logo.png" class="w-12 h-12 rounded-lg" alt="SmartCash"/>
+      <div>
+        <div class="text-xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+        <div class="text-[11px] tracking-widest text-blue-600 uppercase">Finance</div>
+      </div>
+    </a>
+    <!-- Loan ID pill -->
+    <div id="appIdPill" class="hidden bg-gray-100 border border-gray-300 text-xs md:text-sm px-3 py-1.5 rounded-full">
+      Loan ID: <span id="loanId" class="font-semibold ml-1"></span>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="bg-[#1f5d63] text-white">
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <h1 class="text-3xl md:text-4xl font-extrabold">Your Loan Offer</h1>
+    <p class="text-white/90 mt-1">Quick, simple and ready for you</p>
+
+    <!-- STEPPER -->
+    <div class="mt-6 bg-white/10 rounded-2xl px-4 py-3">
+      <div class="flex items-center gap-2">
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span id="dotOffer" class="step-dot active"></span>
+        <div class="flex-1 linkbar"><div id="barOffer" class="linkfill"></div></div>
+        <span id="dotDisbursed" class="step-dot"></span>
+      </div>
+      <div class="grid grid-cols-6 mt-2 text-center label text-white/90">
+        <div>Personal</div><div>Work</div><div>KYC</div><div>Bank</div><div>Offer</div><div>Disbursed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="max-w-3xl mx-auto px-6 -mt-8 pb-16 space-y-8">
+
+  <!-- Congrats Card -->
+  <div class="bg-white card p-8 text-center">
+    <h2 class="text-2xl font-bold text-green-700">Congratulations <span id="custName"></span>!</h2>
+    <p class="text-gray-600 mt-1">Your loan has been approved</p>
+    <div class="mt-4 bg-green-50 border border-green-200 rounded-xl p-4">
+      <div class="text-2xl font-extrabold text-green-800">
+        Approved <span id="loanAmt"></span>
+      </div>
+      <div class="text-gray-700 mt-1">
+        Tenure <span id="tenure"></span> • APR <span id="apr"></span> p.a.
+      </div>
+    </div>
+  </div>
+
+  <!-- Selection Card -->
+  <div class="bg-white card p-6">
+    <h3 class="text-lg font-bold mb-4">Choose Your Loan Amount</h3>
+    <input type="range" id="loanSlider" min="5000" step="1000" class="w-full">
+    <div class="mt-2 text-center text-xl font-bold">₹<span id="chosenAmt"></span></div>
+
+    <div class="mt-6">
+      <label class="font-semibold">Tenure</label>
+      <select id="tenureSel" class="mt-1 w-full border rounded-lg px-3 py-2"></select>
+    </div>
+
+    <button id="acceptBtn" class="mt-6 w-full px-8 py-3 rounded-full font-semibold text-white bg-[#0A2F33] hover:bg-[#062327] transition">
+      Accept Offer
+    </button>
+  </div>
+</main>
+
+<!-- CONFETTI -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+const APP_KEY='scf_app', PERSONAL_KEY='scf_apply_personal', WORK_KEY='scf_apply_work';
+function get(k){ try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null} }
+function set(k,v){ localStorage.setItem(k, JSON.stringify(v||{})) }
+
+const app = get(APP_KEY) || {};
+const personal = get(PERSONAL_KEY) || {};
+const work = get(WORK_KEY) || {};
+const custName = personal?.name || app?.name || 'Customer';
+document.getElementById('custName').textContent = custName;
+
+// Loan ID pill
+if(app?.appId){ 
+  document.getElementById('loanId').textContent=app.appId;
+  document.getElementById('appIdPill').classList.remove('hidden');
+}
+
+// Salary → approval rules
+const salary = Number(work?.income||0);
+let range={};
+if(salary>=9000 && salary<15000){ range={min:10000,max:30000,tenure:6,apr:32}; }
+else if(salary>=15000 && salary<25000){ range={min:30000,max:50000,tenure:12,apr:28}; }
+else if(salary>=25000 && salary<40000){ range={min:50000,max:80000,tenure:18,apr:22}; }
+else if(salary>=40000 && salary<60000){ range={min:80000,max:110000,tenure:24,apr:18}; }
+else if(salary>=60000 && salary<80000){ range={min:110000,max:180000,tenure:30,apr:16}; }
+else if(salary>=80000 && salary<100000){ range={min:180000,max:350000,tenure:48,apr:14}; }
+else if(salary>=100000 && salary<150000){ range={min:350000,max:600000,tenure:60,apr:13}; }
+else if(salary>=150000){ range={min:600000,max:1000000,tenure:72,apr:12}; }
+
+// random approval
+function randomApproval(min,max){
+  const step=1000; const steps=Math.floor((max-min)/step);
+  const r=Math.floor(Math.random()*steps);
+  return min + r*step;
+}
+const approvalAmt = randomApproval(range.min, range.max);
+
+document.getElementById('loanAmt').textContent="₹"+approvalAmt.toLocaleString();
+document.getElementById('tenure').textContent=range.tenure+" months";
+document.getElementById('apr').textContent=range.apr+"%";
+
+// slider init
+const slider=document.getElementById('loanSlider');
+const chosenAmt=document.getElementById('chosenAmt');
+slider.max=approvalAmt;
+slider.value=approvalAmt;
+chosenAmt.textContent=approvalAmt.toLocaleString();
+
+// tenure select
+const sel=document.getElementById('tenureSel');
+for(let i=1;i<=range.tenure;i++){
+  const opt=document.createElement("option");
+  opt.value=i;
+  opt.textContent=i+" month"+(i>1?"s":"");
+  if(i===range.tenure) opt.selected=true;
+  sel.appendChild(opt);
+}
+slider.addEventListener('input',()=>{chosenAmt.textContent=Number(slider.value).toLocaleString();});
+
+// confetti
+setTimeout(()=>{confetti({particleCount:120,spread:70,origin:{y:0.6}});},500);
+
+// Accept Offer
+document.getElementById('acceptBtn').addEventListener('click',()=>{
+  const bar=document.getElementById('barOffer');
+  const dotOffer=document.getElementById('dotOffer');
+  const dotDisbursed=document.getElementById('dotDisbursed');
+
+  // animate Offer → done
+  dotOffer.classList.remove('active');
+  dotOffer.classList.add('done');
+
+  // partial progress (25%)
+  bar.style.width="25%";
+  setTimeout(()=>{ dotDisbursed.classList.add('active'); },600);
+
+  // save + go next
+  setTimeout(()=>{
+    set(APP_KEY,{...(get(APP_KEY)||{}), stage:'Disbursed', approved:approvalAmt, chosen:slider.value, tenure:sel.value, apr:range.apr});
+    window.location.href="final.loan.summary.html";
+  },1500);
+});
+</script>
+</body>
+</html>

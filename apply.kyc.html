@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Apply — KYC | SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#0A2F33; --brand:#1f5d63; --ok:#10b981; --muted:#e5e7eb; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .nav-link{padding:.5rem 1rem;border-radius:9999px}
+    .nav-active{background:#0A2F33;color:#fff !important}
+    .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.08)}
+    .err{display:none}.has-error .err{display:block}
+    .teal-dots{
+      background:
+        radial-gradient(circle at 12px 12px, rgba(255,255,255,.07) 2px, transparent 2.6px) 0 0/24px 24px,
+        #1f5d63;
+    }
+    .step-dot{width:12px;height:12px;border-radius:9999px;background:#d1d5db}
+    .step-dot.done{background:var(--ok)}
+    .step-dot.active{background:#f59e0b}
+    .linkbar{height:6px;border-radius:9999px;background:var(--muted);overflow:hidden;position:relative}
+    .linkfill{height:100%;width:0;background:var(--ok);transition:width .25s ease}
+    .label{font-size:12px}
+    .alert{background:#FEF2F2;color:#991B1B;border:1px solid #FCA5A5}
+    .uploader{border:1px dashed #cbd5e1;border-radius:0.75rem;padding:0.75rem;background:#f8fafc}
+    .thumb{width:80px;height:80px;object-fit:cover;border-radius:0.5rem;border:1px solid #e5e7eb;background:#fff}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+<header class="border-b bg-white sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="assets/logo.png" class="w-12 h-12 rounded-lg" alt="SmartCash"/>
+      <div>
+        <div class="text-xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+        <div class="text-[11px] tracking-widest text-blue-600 uppercase">Finance</div>
+      </div>
+    </a>
+    <nav class="hidden md:flex items-center gap-2 text-sm">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="loan-products.html" class="nav-link">Products</a>
+      <a href="about.html" class="nav-link">About Us</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="calculator.html" class="nav-link">EMI Calculator</a>
+      <a href="status.html" class="nav-link">Status Check</a>
+    </nav>
+    <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+      <a class="py-2 border-b" href="index.html">Home</a>
+      <a class="py-2 border-b" href="loan-products.html">Products</a>
+      <a class="py-2 border-b" href="about.html">About Us</a>
+      <a class="py-2 border-b" href="status.html">Status Check</a>
+      <a class="py-2" href="calculator.html">EMI Calculator</a>
+    </div>
+  </div>
+</header>
+
+<section class="teal-dots text-white">
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-extrabold">KYC</h1>
+        <p class="text-white/90 mt-2">Upload your KYC documents to proceed to Bank step.</p>
+      </div>
+      <div id="appIdPill" class="hidden bg-white/15 border border-white/35 text-xs md:text-sm px-3 py-1.5 rounded-full">
+        App ID: <span id="appIdText" class="font-semibold ml-1"></span>
+      </div>
+    </div>
+
+    <!-- Stepper -->
+    <div class="mt-6 bg-white/10 rounded-2xl px-4 py-3">
+      <div class="flex items-center gap-2">
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot active"></span>
+        <div class="flex-1 linkbar" id="barKyc"></div>
+        <span class="step-dot"></span>
+        <div class="flex-1 linkbar"></div>
+        <span class="step-dot"></span>
+        <div class="flex-1 linkbar"></div>
+        <span class="step-dot"></span>
+      </div>
+      <div class="grid grid-cols-6 mt-2 text-center label text-white/90">
+        <div>Personal</div><div>Work</div><div>KYC</div><div>Bank</div><div>Offer</div><div>Disbursed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="max-w-4xl mx-auto px-6 -mt-8 pb-16">
+  <div id="lockNote" class="hidden bg-yellow-50 text-yellow-900 border border-yellow-200 rounded-xl px-4 py-3 mb-3 text-sm">
+    KYC submitted. Changes are locked. Please proceed to Bank.
+  </div>
+
+  <form id="kform" class="bg-white card ring-1 ring-black/5 p-6 space-y-6" novalidate>
+    <h2 class="text-2xl font-extrabold">KYC Details</h2>
+
+    <!-- PAN duplicate alert -->
+    <div id="dupAlert" class="alert rounded-xl px-4 py-3 text-sm hidden">
+      This PAN is already linked to another application. Please use a different PAN or contact support.
+    </div>
+
+    <!-- Aadhaar + PAN -->
+    <div class="grid md:grid-cols-2 gap-4">
+      <div id="gAadhaar">
+        <label class="text-sm font-medium">Aadhaar Number</label>
+        <input id="aadhaar" maxlength="12" inputmode="numeric" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="12-digit Aadhaar" required>
+        <p class="err text-xs text-red-600 mt-1">Enter a valid 12-digit Aadhaar.</p>
+      </div>
+      <div id="gPAN">
+        <label class="text-sm font-medium">PAN</label>
+        <input id="pan" maxlength="10" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="ABCDE1234F" required>
+        <p class="err text-xs text-red-600 mt-1">Enter a valid PAN (ABCDE1234F).</p>
+      </div>
+    </div>
+
+    <!-- Uploads -->
+    <div class="grid md:grid-cols-2 gap-4">
+      <div id="gAadhaarF" class="uploader">
+        <label class="text-sm font-semibold">Aadhaar Front</label>
+        <div class="mt-2 flex items-center gap-3">
+          <img id="preAadhaarF" class="thumb hidden" alt="Preview"/>
+          <input id="fileAadhaarF" type="file" accept="image/*" capture="environment" class="block w-full text-sm" required>
+        </div>
+        <p class="text-[12px] text-gray-500 mt-1">Use camera or gallery. JPG/PNG.</p>
+        <p class="err text-xs text-red-600 mt-1">Please upload Aadhaar front image.</p>
+      </div>
+
+      <div id="gAadhaarB" class="uploader">
+        <label class="text-sm font-semibold">Aadhaar Back</label>
+        <div class="mt-2 flex items-center gap-3">
+          <img id="preAadhaarB" class="thumb hidden" alt="Preview"/>
+          <input id="fileAadhaarB" type="file" accept="image/*" capture="environment" class="block w-full text-sm" required>
+        </div>
+        <p class="text-[12px] text-gray-500 mt-1">Use camera or gallery. JPG/PNG.</p>
+        <p class="err text-xs text-red-600 mt-1">Please upload Aadhaar back image.</p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div id="gPANImg" class="uploader">
+        <label class="text-sm font-semibold">PAN Image</label>
+        <div class="mt-2 flex items-center gap-3">
+          <img id="prePAN" class="thumb hidden" alt="Preview"/>
+          <input id="filePAN" type="file" accept="image/*" capture="environment" class="block w-full text-sm" required>
+        </div>
+        <p class="text-[12px] text-gray-500 mt-1">Use camera or gallery. JPG/PNG.</p>
+        <p class="err text-xs text-red-600 mt-1">Please upload PAN image.</p>
+      </div>
+
+      <div id="gSelfie" class="uploader">
+        <label class="text-sm font-semibold">Selfie</label>
+        <div class="mt-2 flex items-center gap-3">
+          <img id="preSelfie" class="thumb hidden" alt="Preview"/>
+          <input id="fileSelfie" type="file" accept="image/*" capture="user" class="block w-full text-sm" required>
+        </div>
+        <p class="text-[12px] text-gray-500 mt-1">Use front camera or gallery. JPG/PNG.</p>
+        <p class="err text-xs text-red-600 mt-1">Please upload a selfie.</p>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between pt-2">
+      <a id="backBtn" href="#" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border font-semibold">← Back</a>
+      <button id="nextBtn" disabled class="px-8 py-3 rounded-full font-semibold text-white bg-gray-300 cursor-not-allowed transition">Continue to Bank</button>
+    </div>
+  </form>
+</main>
+
+<footer class="border-t bg-white">
+  <div class="max-w-7xl mx-auto px-6 py-6 text-center text-[13px] text-gray-600">
+    © <span id="yr"></span> SmartCash Finance • <a class="underline" href="privacy.html">Privacy</a> • <a class="underline" href="terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+const APP_KEY='scf_app', DRAFT_KEY='scf_apply_kyc', PAN_IDX='scf_pan_index';
+document.getElementById('yr').textContent=new Date().getFullYear();
+document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('hidden'));
+
+// Helpers
+const clean10=v=>String(v||'').replace('+91','').replace(/\D/g,'').slice(-10);
+const isAad=v=>/^\d{12}$/.test(String(v||'').trim());
+const isPAN=v=>/^[A-Z]{5}\d{4}[A-Z]$/.test(String(v||'').trim().toUpperCase());
+function getApp(){ try{return JSON.parse(localStorage.getItem(APP_KEY)||'null')}catch{return null} }
+function setApp(o){ localStorage.setItem(APP_KEY, JSON.stringify(o||{})) }
+function routeToStage(stage){
+  const s=String(stage||'').toLowerCase();
+  if(s==='personal')return 'apply.html';
+  if(s==='work')return 'apply.work.html';
+  if(s==='kyc')return 'apply.kyc.html';
+  if(s==='bank')return 'apply.bank.html';
+  if(s==='offer')return 'offer.html';
+  if(s==='disbursed')return 'disbursed.html';
+  return 'apply.html';
+}
+function showAppId(id){ if(id){ document.getElementById('appIdText').textContent=id; document.getElementById('appIdPill').classList.remove('hidden'); } }
+function setLocked(locked){
+  document.querySelectorAll('#kform input[type="text"], #kform input[type="file"]').forEach(el=>{
+    if(el.type==='file'){ el.disabled=locked; } else { el.readOnly=locked; }
+    el.classList.toggle('bg-gray-50',locked);
+  });
+  document.getElementById('nextBtn').style.display=locked?'none':'';
+  document.getElementById('lockNote').classList.toggle('hidden',!locked);
+}
+function setErr(id,bad){ document.getElementById(id).classList.toggle('has-error',bad); }
+function showDup(b){ document.getElementById('dupAlert').classList.toggle('hidden', !b); }
+
+// Elements
+const aadhaar=document.getElementById('aadhaar');
+const pan=document.getElementById('pan');
+
+const fileAadhaarF=document.getElementById('fileAadhaarF');
+const fileAadhaarB=document.getElementById('fileAadhaarB');
+const filePAN=document.getElementById('filePAN');
+const fileSelfie=document.getElementById('fileSelfie');
+
+const preAadhaarF=document.getElementById('preAadhaarF');
+const preAadhaarB=document.getElementById('preAadhaarB');
+const prePAN=document.getElementById('prePAN');
+const preSelfie=document.getElementById('preSelfie');
+
+const nextBtn=document.getElementById('nextBtn');
+
+// Input behaviors
+aadhaar.addEventListener('input', ()=>{
+  aadhaar.value = aadhaar.value.replace(/\D/g,'').slice(0,12); // only digits, max 12
+});
+pan.addEventListener('input', ()=>{
+  pan.value = pan.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,10); // uppercase
+});
+
+// Previews
+function showPreview(inputEl, imgEl){
+  const f = inputEl.files && inputEl.files[0];
+  if(!f){ imgEl.src=''; imgEl.classList.add('hidden'); return; }
+  const url = URL.createObjectURL(f);
+  imgEl.src = url;
+  imgEl.classList.remove('hidden');
+}
+[fileAadhaarF, fileAadhaarB, filePAN, fileSelfie].forEach(el=>{
+  const map = {fileAadhaarF:preAadhaarF, fileAadhaarB:preAadhaarB, filePAN:prePAN, fileSelfie:preSelfie};
+  el.addEventListener('change', ()=> showPreview(el, map[el.id]));
+});
+
+// Validation
+function validate(show){
+  const v = {
+    aadhaar: isAad(aadhaar.value),
+    pan:     isPAN(pan.value),
+    f1:      fileAadhaarF.files.length>0,
+    f2:      fileAadhaarB.files.length>0,
+    f3:      filePAN.files.length>0,
+    f4:      fileSelfie.files.length>0
+  };
+  if(show){
+    setErr('gAadhaar', !v.aadhaar);
+    setErr('gPAN',     !v.pan);
+    setErr('gAadhaarF',!v.f1);
+    setErr('gAadhaarB',!v.f2);
+    setErr('gPANImg',  !v.f3);
+    setErr('gSelfie',  !v.f4);
+  }
+  const ok = Object.values(v).every(Boolean);
+  nextBtn.disabled = !ok;
+  nextBtn.className = ok
+    ? "px-8 py-3 rounded-full font-semibold text-white bg-[#0A2F33] hover:bg-[#062327] transition"
+    : "px-8 py-3 rounded-full font-semibold text-white bg-gray-300 cursor-not-allowed transition";
+  return ok;
+}
+['aadhaar','pan','fileAadhaarF','fileAadhaarB','filePAN','fileSelfie'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('input', ()=>validate(false));
+  el.addEventListener('change',()=>validate(true));
+});
+
+// Draft (metadata only; files localStorage me store nahi kar rahe)
+function saveDraft(){
+  const rec={aadhaar:aadhaar.value.trim(), pan:pan.value.trim().toUpperCase(), ts:Date.now()};
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(rec));
+}
+function loadDraft(){
+  try{
+    const d=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null'); if(!d) return;
+    if(d.aadhaar) aadhaar.value=d.aadhaar;
+    if(d.pan) pan.value=d.pan.toUpperCase();
+  }catch{}
+}
+
+// Local PAN index demo (replace with server later)
+function getPanIndex(){ try{return JSON.parse(localStorage.getItem('scf_pan_index')||'{}')}catch{return{}} }
+function setPanIndex(obj){ localStorage.setItem('scf_pan_index', JSON.stringify(obj||{})) }
+
+// Submit
+document.getElementById('kform').addEventListener('submit', e=>e.preventDefault());
+nextBtn.addEventListener('click', e=>{
+  e.preventDefault();
+  if(!validate(true)) return;
+
+  const app=getApp()||{};
+  const curAppId = app?.appId || ('LOCAL-'+Date.now());
+  if(!app?.appId){ setApp({ ...app, appId: curAppId }); }
+
+  // PAN duplicate check (demo)
+  const panVal = pan.value.trim().toUpperCase();
+  const idx = getPanIndex();
+  if(idx[panVal] && idx[panVal] !== curAppId){
+    showDup(true);
+    pan.focus();
+    return;
+  }
+  showDup(false);
+
+  // Save draft metadata
+  saveDraft();
+  // Map PAN -> appId
+  idx[panVal] = curAppId;
+  setPanIndex(idx);
+
+  // Advance stage
+  setApp({ ...(getApp()||{}), stage:'Bank' }); // later: set from server response
+  setLocked(true);
+  window.location.href='apply.bank.html';
+});
+
+// Back
+document.getElementById('backBtn').addEventListener('click', e=>{
+  e.preventDefault();
+  if(history.length>1) history.back(); else location.href='apply.work.html';
+});
+
+// Init
+(function(){
+  const app=getApp()||{};
+  if(app?.appId) showAppId(app.appId);
+
+  const stage = (app?.stage)||'Personal';
+  if(stage!=='KYC'){
+    setLocked(true);
+    setTimeout(()=>location.href=routeToStage(stage),300);
+  } else {
+    setLocked(false);
+  }
+  loadDraft();
+  validate(false);
+})();
+</script>
+</body>
+</html>

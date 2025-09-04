@@ -18,7 +18,6 @@
     .nav-active{background:#0A2F33;color:#fff !important}
     .err{display:none}
     .has-error .err{display:block}
-    /* testimonial carousel */
     .snap-x{scroll-snap-type:x mandatory}
     .snap-start{scroll-snap-align:start}
   </style>
@@ -90,7 +89,7 @@
           <p class="mt-3 text-white/90 text-lg">Quick approval • Transparent charges • 100% online process</p>
         </div>
 
-        <!-- lead form (no red styling, only message) -->
+        <!-- lead form -->
         <form id="leadForm" class="mt-6 w-full max-w-md bg-white text-gray-900 rounded-2xl shadow-2xl p-6 space-y-4" novalidate>
           <div id="grpName">
             <label class="text-sm font-medium">Full Name</label>
@@ -116,6 +115,11 @@
           <button id="applyBtn"
             class="block w-full text-center rounded-full bg-gray-300 text-gray-600 py-3 font-semibold cursor-not-allowed transition active:scale-[.98] shadow"
             disabled>Apply Now</button>
+
+          <p id="guardMsg" class="text-[12px] text-red-600 text-center hidden">
+            This email/mobile is already used for an application. Please use a different one.
+          </p>
+
           <p class="text-[11px] text-gray-500 text-center">
             By applying you agree to our <a href="terms.html" class="underline">Terms</a> & <a href="privacy.html" class="underline">Privacy Policy</a>.
           </p>
@@ -157,7 +161,7 @@
     </div>
   </section>
 
-  <!-- TESTIMONIALS: horizontal scroll -->
+  <!-- TESTIMONIALS -->
   <section class="max-w-7xl mx-auto px-6 py-14">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-2xl font-bold">What our Customers are saying</h2>
@@ -165,7 +169,6 @@
     </div>
     <div class="overflow-x-auto snap-x scrollbar-thin">
       <div class="flex gap-4 min-w-full">
-        <!-- 8 cards -->
         <article class="snap-start min-w-[290px] max-w-[290px] p-5 rounded-2xl border bg-white">
           <div>⭐️⭐️⭐️⭐️⭐️</div>
           <p class="text-sm text-gray-600 mt-2">“Fast approval and smooth process. Money came in 24 hours.”</p>
@@ -221,7 +224,7 @@
     <p class="text-xs text-gray-500 mt-4 text-center">Example: ₹1,00,000 over 24 months @ 18% p.a. → EMI ≈ ₹4,992. Actual rates depend on profile.</p>
   </section>
 
-  <!-- CTA: EMI CALCULATOR -->
+  <!-- CTA -->
   <section class="bg-blue-700 text-white">
     <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-8 items-center">
       <div>
@@ -234,7 +237,7 @@
     </div>
   </section>
 
-  <!-- FOOTER (unchanged from your pro footer) -->
+  <!-- FOOTER -->
   <footer class="bg-[#0b3a3f] text-gray-200">
     <div class="text-[12px] text-gray-300/90 border-b border-white/10">
       <div class="max-w-7xl mx-auto px-6 py-3 text-center md:text-left leading-relaxed">
@@ -307,6 +310,28 @@
   </footer>
 
   <script>
+    // =========================
+    //  Global helpers (SCF)
+    // =========================
+    (function(){
+      const safeJSON = {
+        parse: (s, d=null)=>{ try{return JSON.parse(s)}catch{return d} },
+        stringify: (o)=>{ try{return JSON.stringify(o)}catch{return ""} }
+      };
+      const titleCase= s => String(s||'').toLowerCase().split(/\s+/).filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+      const clean10  = v => String(v||'').replace('+91','').replace(/\D/g,'').slice(-10);
+
+      const SCF = {
+        titleCase, clean10,
+        getLead(){ return safeJSON.parse(localStorage.getItem('scf_lead'), null); },
+        setLead(lead){ localStorage.setItem('scf_lead', safeJSON.stringify(lead)); },
+        getApp(){ return safeJSON.parse(localStorage.getItem('scf_app'), null); },
+        setApp(app){ localStorage.setItem('scf_app', safeJSON.stringify(app)); },
+        getSubmitted(){ return safeJSON.parse(localStorage.getItem('scf_submitted_ids')||'[]', []); }
+      };
+      window.SCF = SCF;
+    })();
+
     // year
     document.getElementById('yr').textContent = new Date().getFullYear();
 
@@ -322,7 +347,7 @@
       if(href===path || (path===''&&href==='index.html')) a.classList.add('nav-active');
     });
 
-    // ----- Lead form validation (no red styling, only messages) -----
+    // ----- Lead form validation -----
     const nameI = document.getElementById('fName');
     const emailI = document.getElementById('fEmail');
     const mobI   = document.getElementById('fMobile');
@@ -330,37 +355,130 @@
     const grpName  = document.getElementById('grpName');
     const grpEmail = document.getElementById('grpEmail');
     const grpMobile= document.getElementById('grpMobile');
+    const guardMsg = document.getElementById('guardMsg');
 
-    const isName   = v => v.trim().length >= 3;
-    const isEmail  = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
-    const isMobile = v => /^[6-9]\d{9}$/.test(v.trim());
-    const titleCase= s => s.toLowerCase().split(/\s+/).filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+    const isName   = v => String(v||'').trim().length >= 3;
+    const isEmail  = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||'').trim());
+    const isMobile = v => /^[6-9]\d{9}$/.test(String(v||'').trim());
 
     function setMsg(group, bad){ group.classList.toggle('has-error', bad); }
+
+    // ---- Guard (FINAL-only) ----
+    const GUARD_KEY = 'scf_submitted_ids';
+    const getSubmitted = () => { try { return JSON.parse(localStorage.getItem(GUARD_KEY) || '[]'); } catch { return []; } };
+    function isDupFinal(email, mobile){
+      const e = (email||'').trim().toLowerCase();
+      const m = '+91'+SCF.clean10(mobile||'');
+      return getSubmitted().some(x => (e && x.email===e) || (m && x.mobile===m));
+    }
 
     function validate(show=false){
       const okN=isName(nameI.value), okE=isEmail(emailI.value), okM=isMobile(mobI.value);
       if(show){ setMsg(grpName,!okN); setMsg(grpEmail,!okE); setMsg(grpMobile,!okM); }
       const ok=okN&&okE&&okM;
-      applyBtn.disabled=!ok;
-      applyBtn.className = ok
-        ? "block w-full text-center rounded-full bg-[#0A2F33] hover:bg-[#062327] text-white py-3 font-semibold transition active:scale-[.98] shadow-lg"
-        : "block w-full text-center rounded-full bg-gray-300 text-gray-600 py-3 font-semibold cursor-not-allowed transition shadow";
-      return ok;
+
+      const dup = ok ? isDupFinal(emailI.value, mobI.value) : false;
+      guardMsg.classList.toggle('hidden', !dup);
+
+      applyBtn.disabled = !ok || dup;
+      applyBtn.className = (!ok || dup)
+        ? "block w-full text-center rounded-full bg-gray-300 text-gray-600 py-3 font-semibold cursor-not-allowed transition shadow"
+        : "block w-full text-center rounded-full bg-[#0A2F33] hover:bg-[#062327] text-white py-3 font-semibold transition active:scale-[.98] shadow-lg";
+      return ok && !dup;
     }
+
     [nameI,emailI,mobI].forEach(el=>{
       el.addEventListener('input', ()=>validate(false));
       el.addEventListener('blur',  ()=>validate(true));
     });
-    validate(false);
 
-    // submit
-    applyBtn.addEventListener('click', e=>{
+    // Prefill from last lead
+    (function(){
+      try{
+        const last = SCF.getLead();
+        if(last){
+          if(!nameI.value)  nameI.value  = SCF.titleCase(last.name||'');
+          if(!emailI.value) emailI.value = (last.email||'');
+          if(!mobI.value)   mobI.value   = (last.mobile||'').replace('+91','');
+        }
+      }catch{}
+      validate(false);
+    })();
+
+    // =========================================================
+    //                >>>  GAS INTEGRATION  <<<
+    // =========================================================
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxalnQ2fHtSN84ChnYKC1UtgFrJu2OXg-hV82wwKFxhp0BZJwgdpMSA58daVx9ONw/exec";
+
+    function routeToStage(stage){
+      const s = String(stage||'').toLowerCase();
+      if(s==='personal')     return 'apply.html';
+      if(s==='work')         return 'apply.work.html';
+      if(s==='kyc')          return 'apply.kyc.html';
+      if(s==='bank')         return 'apply.bank.html';
+      if(s==='review')       return 'apply.review.html';
+      if(s==='offer')        return 'offer.html';
+      if(s==='agreement')    return 'agreement.html';
+      if(s==='disbursed')    return 'disbursed.html';
+      return 'apply.html';
+    }
+
+    async function upsertLead(lead){
+      try{
+        const res = await fetch(SCRIPT_URL, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ action: 'upsertLead', payload: { name: lead.name, email: lead.email, mobile: lead.mobile } })
+        });
+        const data = await res.json();
+        return data || { ok:false };
+      }catch(err){
+        console.error('GAS error:', err);
+        return { ok:false };
+      }
+    }
+
+    function buildQuery(lead){
+      const q = new URLSearchParams({
+        src: 'hero',
+        name: lead.name || '',
+        email: lead.email || '',
+        mobile: SCF.clean10(lead.mobile || '')
+      });
+      return q.toString();
+    }
+
+    // Submit
+    applyBtn.addEventListener('click', async (e)=>{
       e.preventDefault();
       if(!validate(true)) return;
-      const lead={ name:titleCase(nameI.value), email:emailI.value.trim().toLowerCase(), mobile:"+91"+mobI.value.trim(), ts:new Date().toISOString() };
-      localStorage.setItem('scf_lead', JSON.stringify(lead));
-      window.location.href='apply.html';
+
+      const lead={
+        name:  SCF.titleCase(nameI.value),
+        email: String(emailI.value||'').trim().toLowerCase(),
+        mobile:"+91"+SCF.clean10(mobI.value),
+        ts: new Date().toISOString()
+      };
+
+      // Save locally (backup for apply page)
+      SCF.setLead(lead);
+
+      // Default next route (Personal)
+      let appState = { appId: null, stage: 'Personal', email: lead.email, mobile: lead.mobile, name: lead.name };
+
+      // Fire-and-forget GAS (won't block redirect)
+      upsertLead(lead).then(resp=>{
+        if(resp && resp.ok){
+          appState.appId = resp.appId || null;
+          appState.stage = resp.stage || 'Personal';
+        }
+        SCF.setApp(appState);
+      }).catch(()=>{ /* ignore */ });
+
+      // Immediate redirect WITH URL params (force prefill on apply)
+      const next = routeToStage(appState.stage);
+      const qs   = buildQuery(lead);
+      window.location.href = next + (next.includes('?')?'&':'?') + qs;
     });
   </script>
 </body>

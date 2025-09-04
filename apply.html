@@ -2,23 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Apply — Step 1: Personal Details | SmartCash Finance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Apply — Personal Details | SmartCash Finance</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{ --ink:#0A2F33; --brand:#1f5d63; }
+    :root{ --ink:#0A2F33; --brand:#1f5d63; --ok:#10b981; --muted:#e5e7eb; }
     body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
     .nav-link{padding:.5rem 1rem;border-radius:9999px}
     .nav-active{background:#0A2F33;color:#fff !important}
-    .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.06)}
-    .err{display:none}
-    .has-error .err{display:block}
+    .card{border-radius:1.25rem;box-shadow:0 12px 32px rgba(0,0,0,.08)}
+    .err{display:none}.has-error .err{display:block}
     .teal-dots{
       background:
         radial-gradient(circle at 12px 12px, rgba(255,255,255,.07) 2px, transparent 2.6px) 0 0/24px 24px,
-        var(--brand);
+        #1f5d63;
     }
+    .step-dot{width:12px;height:12px;border-radius:9999px;background:#f59e0b}
+    .step-dot.muted{background:#d1d5db}
+    .step-dot.done{background:var(--ok)}
+    .linkbar{height:6px;border-radius:9999px;background:var(--muted);overflow:hidden;position:relative}
+    .linkfill{height:100%;width:0;background:var(--ok);transition:width .25s ease}
+    .label{font-size:12px}
+    .lock-note{background:#fff3cd;border:1px solid #ffe69c;color:#664d03}
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -29,272 +35,379 @@
       <a href="index.html" class="flex items-center gap-3">
         <img src="assets/logo.png" class="w-12 h-12 rounded-lg" alt="SmartCash"/>
         <div>
-          <div class="text-xl font-extrabold text-blue-700">SmartCash</div>
+          <div class="text-xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
           <div class="text-[11px] tracking-widest text-blue-600 uppercase">Finance</div>
         </div>
       </a>
+
       <nav class="hidden md:flex items-center gap-2 text-sm">
         <a href="index.html" class="nav-link">Home</a>
         <a href="loan-products.html" class="nav-link">Products</a>
         <a href="about.html" class="nav-link">About Us</a>
         <a href="contact.html" class="nav-link">Contact</a>
+        <a href="calculator.html" class="nav-link">EMI Calculator</a>
         <a href="status.html" class="nav-link">Status Check</a>
       </nav>
+
       <button id="menuBtn" class="md:hidden p-2 rounded-lg border" aria-label="Open menu">
         <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="#111827" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
     </div>
+
     <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
       <div class="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
         <a class="py-2 border-b" href="index.html">Home</a>
         <a class="py-2 border-b" href="loan-products.html">Products</a>
         <a class="py-2 border-b" href="about.html">About Us</a>
-        <a class="py-2 border-b" href="contact.html">Contact</a>
-        <a class="py-2" href="status.html">Status Check</a>
+        <a class="py-2 border-b" href="status.html">Status Check</a>
+        <a class="py-2" href="calculator.html">EMI Calculator</a>
       </div>
     </div>
   </header>
 
-  <!-- PROGRESS STRIP -->
+  <!-- HERO / STEPPER -->
   <section class="teal-dots text-white">
-    <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-      <div>
-        <h1 class="text-2xl md:text-3xl font-extrabold">Apply — Step 1 of 4: Personal Details</h1>
-        <p class="text-white/90 mt-1">Please provide your basic information.</p>
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-extrabold">Personal Details</h1>
+          <p class="text-white/90 mt-2">Fill your basic info & address to start your application.</p>
+        </div>
+        <div id="appIdPill" class="hidden bg-white/15 border border-white/35 text-xs md:text-sm px-3 py-1.5 rounded-full">
+          App ID: <span id="appIdText" class="font-semibold ml-1"></span>
+        </div>
       </div>
-      <div class="hidden md:flex items-center gap-2 text-sm">
-        <div class="h-2 w-24 rounded bg-white/30"><div class="h-2 w-1/4 rounded bg-white"></div></div>
-        <span>25%</span>
+
+      <!-- Dots + Bars -->
+      <div class="mt-6 bg-white/10 rounded-2xl px-4 py-3">
+        <div class="flex items-center gap-2">
+          <span id="dot1" class="step-dot"></span>
+          <div class="flex-1 linkbar"><div id="fill1" class="linkfill"></div></div>
+          <span id="dot2" class="step-dot muted"></span>
+          <div class="flex-1 linkbar" id="bar2"></div>
+          <span id="dot3" class="step-dot muted"></span>
+          <div class="flex-1 linkbar" id="bar3"></div>
+          <span id="dot4" class="step-dot muted"></span>
+          <div class="flex-1 linkbar" id="bar4"></div>
+          <span id="dot5" class="step-dot muted"></span>
+          <div class="flex-1 linkbar" id="bar5"></div>
+          <span id="dot6" class="step-dot muted"></span>
+        </div>
+        <div class="grid grid-cols-6 mt-2 text-center label text-white/90">
+          <div>Personal</div><div>Work</div><div>KYC</div><div>Bank</div><div>Offer</div><div>Disbursed</div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- FORM -->
-  <main class="max-w-5xl mx-auto px-6 py-8">
-    <form id="pform" class="bg-white card p-6 grid gap-6" novalidate>
-      <!-- Contact -->
-      <div>
-        <h2 class="text-xl font-bold">Contact</h2>
-        <div class="mt-4 grid md:grid-cols-2 gap-4">
-          <div id="gName">
-            <label class="text-sm font-medium">Full Name</label>
-            <input id="name" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="Full name" required>
-            <p class="err text-xs text-red-600 mt-1">Please enter your full name (min 3 chars).</p>
-          </div>
-          <div id="gEmail">
-            <label class="text-sm font-medium">Email</label>
-            <input id="email" type="email" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="name@example.com" required>
-            <p class="err text-xs text-red-600 mt-1">Enter a valid email.</p>
-          </div>
-          <div id="gMobile" class="md:col-span-2">
-            <label class="text-sm font-medium">Mobile Number</label>
-            <div class="mt-1 flex">
-              <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 bg-gray-50 text-gray-600 select-none">+91</span>
-              <input id="mobile" inputmode="numeric" maxlength="10" class="w-full border rounded-r-lg px-3 py-2" placeholder="10-digit mobile" required>
-            </div>
-            <p class="err text-xs text-red-600 mt-1">Enter a valid 10-digit mobile number.</p>
-          </div>
+  <main class="max-w-4xl mx-auto px-6 -mt-8 pb-16">
+    <div id="lockNote" class="hidden lock-note rounded-xl px-4 py-3 mb-3 text-sm">
+      Personal details submitted. Changes are locked. Please proceed to Work.
+    </div>
+
+    <form id="pform" class="bg-white card ring-1 ring-black/5 p-6 space-y-5" novalidate>
+      <h2 class="text-2xl font-extrabold">Personal Details</h2>
+
+      <div class="grid md:grid-cols-3 gap-4">
+        <div id="gName">
+          <label class="text-sm font-medium">Full Name</label>
+          <input id="name" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="e.g., Rahul Kumar" required>
+          <p class="err text-xs text-red-600 mt-1">Please enter your full name (min 3 chars).</p>
+        </div>
+        <div id="gDob">
+          <label class="text-sm font-medium">Date of Birth</label>
+          <input id="dob" type="date" class="mt-1 w-full border rounded-lg px-3 py-2" required>
+          <p class="err text-xs text-red-600 mt-1">You must be 18+ years old.</p>
+        </div>
+        <div id="gGender">
+          <label class="text-sm font-medium">Gender</label>
+          <select id="gender" class="mt-1 w-full border rounded-lg px-3 py-2" required>
+            <option value="">Select</option>
+            <option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option>
+          </select>
+          <p class="err text-xs text-red-600 mt-1">Please select gender.</p>
         </div>
       </div>
 
-      <!-- Personal -->
-      <div>
-        <h2 class="text-xl font-bold">Personal Information</h2>
-        <div class="mt-4 grid md:grid-cols-3 gap-4">
-          <div id="gDob">
-            <label class="text-sm font-medium">Date of Birth</label>
-            <input id="dob" type="date" class="mt-1 w-full border rounded-lg px-3 py-2" required>
-            <p class="err text-xs text-red-600 mt-1">Age must be 18 years or above.</p>
-          </div>
-          <div>
-            <label class="text-sm font-medium">Gender</label>
-            <select id="gender" class="mt-1 w-full border rounded-lg px-3 py-2">
-              <option value="">Select</option>
-              <option>Male</option><option>Female</option><option>Other</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-sm font-medium">Marital Status</label>
-            <select id="marital" class="mt-1 w-full border rounded-lg px-3 py-2">
-              <option value="">Select</option>
-              <option>Single</option><option>Married</option><option>Other</option>
-            </select>
-          </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div id="gFather">
+          <label class="text-sm font-medium">Father’s Name</label>
+          <input id="father" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="e.g., Suresh Kumar" required>
+          <p class="err text-xs text-red-600 mt-1">Please enter father’s name.</p>
+        </div>
+        <div id="gMarital">
+          <label class="text-sm font-medium">Marital Status</label>
+          <select id="marital" class="mt-1 w-full border rounded-lg px-3 py-2" required>
+            <option value="">Select</option>
+            <option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option>
+          </select>
+          <p class="err text-xs text-red-600 mt-1">Please select marital status.</p>
         </div>
       </div>
 
-      <!-- Work & Income -->
-      <div>
-        <h2 class="text-xl font-bold">Work & Income</h2>
-        <div class="mt-4 grid md:grid-cols-3 gap-4">
-          <div id="gEmp">
-            <label class="text-sm font-medium">Employment Type</label>
-            <select id="employment" class="mt-1 w-full border rounded-lg px-3 py-2" required>
-              <option value="">Select</option>
-              <option>Salaried</option>
-              <option>Self-Employed</option>
-              <option>Freelancer</option>
-              <option>Student</option>
-              <option>Homemaker</option>
-              <option>Retired</option>
-            </select>
-            <p class="err text-xs text-red-600 mt-1">Please select employment type.</p>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div id="gEmail">
+          <label class="text-sm font-medium">Email</label>
+          <input id="email" type="email" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="name@example.com" required>
+          <p class="err text-xs text-red-600 mt-1">Enter a valid email address.</p>
+        </div>
+        <div id="gMobile">
+          <label class="text-sm font-medium">Mobile Number</label>
+          <div class="mt-1 flex">
+            <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 bg-gray-50 text-gray-600 select-none">+91</span>
+            <input id="mobile" inputmode="numeric" maxlength="10" class="w-full border rounded-r-lg px-3 py-2" placeholder="10-digit mobile" required>
           </div>
-          <div id="gIncome">
-            <label class="text-sm font-medium">Monthly Income (₹)</label>
-            <input id="income" inputmode="numeric" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="e.g. 30000" required>
-            <p class="err text-xs text-red-600 mt-1">Minimum income should be ₹8,000.</p>
-          </div>
-          <div>
-            <label class="text-sm font-medium">Company / Business (optional)</label>
-            <input id="employer" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="Company/Business name">
-          </div>
+          <p class="err text-xs text-red-600 mt-1">Enter a valid 10-digit mobile number.</p>
         </div>
       </div>
 
-      <!-- Address -->
+      <div id="gAddr1">
+        <label class="text-sm font-medium">Address Line 1</label>
+        <input id="addr1" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="House / Flat, Street" required>
+        <p class="err text-xs text-red-600 mt-1">Please enter address line 1.</p>
+      </div>
       <div>
-        <h2 class="text-xl font-bold">Current Address</h2>
-        <div class="mt-4 grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="text-sm font-medium">Residence Type</label>
-            <select id="residence" class="mt-1 w-full border rounded-lg px-3 py-2">
-              <option value="">Select</option>
-              <option>Owned</option><option>Rented</option><option>Company Provided</option><option>With Family</option>
-            </select>
-          </div>
-          <div id="gPin">
-            <label class="text-sm font-medium">Pincode</label>
-            <input id="pincode" inputmode="numeric" maxlength="6" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="6-digit pincode" required>
-            <p class="err text-xs text-red-600 mt-1">Enter a valid 6-digit pincode.</p>
-          </div>
-          <div class="md:col-span-2">
-            <label class="text-sm font-medium">Address Line 1</label>
-            <input id="addr1" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="House/Street/Locality">
-          </div>
-          <div>
-            <label class="text-sm font-medium">City</label>
-            <input id="city" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="City">
-          </div>
-          <div>
-            <label class="text-sm font-medium">State</label>
-            <input id="state" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="State">
-          </div>
+        <label class="text-sm font-medium">Address Line 2 (Optional)</label>
+        <input id="addr2" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="Area / Landmark (optional)">
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4">
+        <div id="gPin">
+          <label class="text-sm font-medium">Pincode</label>
+          <input id="pin" inputmode="numeric" maxlength="6" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="6-digit pincode" required>
+          <p class="err text-xs text-red-600 mt-1">Enter a valid 6-digit pincode.</p>
+        </div>
+        <div>
+          <label class="text-sm font-medium">City</label>
+          <input id="city" class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50" placeholder="Auto-filled" readonly>
+        </div>
+        <div>
+          <label class="text-sm font-medium">State</label>
+          <input id="state" class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50" placeholder="Auto-filled" readonly>
         </div>
       </div>
 
-      <!-- Footer actions -->
-      <div class="flex items-center justify-between">
-        <p class="text-xs text-gray-500">By continuing, you agree to our <a href="terms.html" class="underline">Terms</a> & <a href="privacy.html" class="underline">Privacy Policy</a>.</p>
-        <button id="nextBtn" class="rounded-full bg-[#0A2F33] hover:bg-[#062327] text-white px-6 py-3 font-semibold">Save & Continue</button>
+      <div class="flex items-center justify-between pt-2">
+        <a id="backBtn" href="#" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border font-semibold">← Back</a>
+        <button id="nextBtn" disabled class="px-8 py-3 rounded-full font-semibold text-white bg-gray-300 cursor-not-allowed transition active:scale-[.98]">Continue to Work</button>
       </div>
-      <div id="saveOk" class="hidden text-sm text-green-600 font-semibold">Saved! Taking you to KYC…</div>
     </form>
   </main>
 
-  <script>
-    // mobile menu
-    document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('hidden'));
-    // active nav
-    const path=(location.pathname.split('/').pop()||'apply.html');
-    document.querySelectorAll('nav a.nav-link').forEach(a=>{ if(a.getAttribute('href')===path) a.classList.add('nav-active'); });
+  <footer class="border-t bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-6">
+      <div class="w-full flex items-center justify-center gap-3 text-[13px] text-gray-600">
+        <span>© <span id="yr"></span> SmartCash Finance</span>
+        <span class="opacity-50">•</span>
+        <a class="underline hover:text-gray-800" href="privacy.html">Privacy</a>
+        <span class="opacity-50">•</span>
+        <a class="underline hover:text-gray-800" href="terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
 
-    // helpers
-    const $ = id => document.getElementById(id);
-    const toTitle = s => s.toLowerCase().split(/\s+/).filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
-    const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
-    const isMobile= v => /^[6-9]\d{9}$/.test(v.trim());
-    const isPincode=v => /^\d{6}$/.test(v.trim());
+<script>
+  // KEYS
+  const DRAFT_KEY='scf_apply_personal', APP_KEY='scf_app', LEAD_KEY='scf_lead';
 
-    // groups for error messages
-    const G = { name:$('gName'), email:$('gEmail'), mobile:$('gMobile'), dob:$('gDob'), emp:$('gEmp'), income:$('gIncome'), pin:$('gPin') };
-    const F = { name:$('name'), email:$('email'), mobile:$('mobile'), dob:$('dob'), gender:$('gender'), marital:$('marital'),
-                employment:$('employment'), income:$('income'), employer:$('employer'),
-                residence:$('residence'), pincode:$('pincode'), addr1:$('addr1'), city:$('city'), state:$('state') };
+  // header basics
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('hidden'));
+  const path=(location.pathname.split('/').pop()||'apply.html');
+  document.querySelectorAll('nav a.nav-link').forEach(a=>{ if(a.getAttribute('href')===path) a.classList.add('nav-active'); });
 
-    function setErr(group, bad){ group.classList.toggle('has-error', bad); }
-    function ageFromDob(d){
-      const dob = new Date(d); if(isNaN(dob)) return 0;
-      const today=new Date(); let age=today.getFullYear()-dob.getFullYear();
-      const m=today.getMonth()-dob.getMonth(); if(m<0 || (m===0 && today.getDate()<dob.getDate())) age--;
-      return age;
+  // elements (SAFE refs)
+  const f = {
+    name:   document.getElementById('name'),
+    dob:    document.getElementById('dob'),
+    gender: document.getElementById('gender'),
+    father: document.getElementById('father'),
+    marital:document.getElementById('marital'),
+    email:  document.getElementById('email'),
+    mobile: document.getElementById('mobile'),
+    addr1:  document.getElementById('addr1'),
+    addr2:  document.getElementById('addr2'),
+    pin:    document.getElementById('pin'),
+    city:   document.getElementById('city'),
+    state:  document.getElementById('state'),
+    next:   document.getElementById('nextBtn')
+  };
+  const g = {
+    name: document.getElementById('gName'),
+    dob: document.getElementById('gDob'),
+    gender: document.getElementById('gGender'),
+    father: document.getElementById('gFather'),
+    marital: document.getElementById('gMarital'),
+    email: document.getElementById('gEmail'),
+    mobile: document.getElementById('gMobile'),
+    addr1: document.getElementById('gAddr1'),
+    pin: document.getElementById('gPin')
+  };
+
+  const appIdPill=document.getElementById('appIdPill'), appIdText=document.getElementById('appIdText'), lockNote=document.getElementById('lockNote');
+
+  // stepper parts
+  const dot1=document.getElementById('dot1'), fill1=document.getElementById('fill1');
+  const bar2=document.getElementById('bar2');
+
+  // helpers
+  const isName=v=>String(v||'').trim().length>=3;
+  const isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||'').trim());
+  const isMobile=v=>/^[6-9]\d{9}$/.test(String(v||'').trim());
+  const isPin=v=>/^[1-9]\d{5}$/.test(String(v||'').trim());
+  const is18Plus=s=>{const d=new Date(s);if(isNaN(d))return false;const t=new Date();let a=t.getFullYear()-d.getFullYear();const m=t.getMonth()-d.getMonth();if(m<0||(m===0&&t.getDate()<d.getDate()))a--;return a>=18;};
+  const titleCase=s=>String(s||'').toLowerCase().split(/\s+/).filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+  const clean10=v=>String(v||'').replace('+91','').replace(/\D/g,'').slice(-10);
+  const deplus=s=>String(s||'').replace(/\+/g,' '); // + -> space for URL params
+
+  function setErr(group,bad){
+    group.classList.toggle('has-error',bad);
+    const input=group.querySelector('input,select,textarea'); if(!input) return;
+    input.classList.remove('ring-1','ring-red-500');
+  }
+
+  function updateProgressUI(vm){
+    const keys=['name','dob','gender','father','marital','email','mobile','addr1','pin','city','state'];
+    const total=keys.length, done=keys.reduce((n,k)=>n+(vm[k]?1:0),0);
+    const pct=Math.round(done/total*100);
+    fill1.style.width=pct+'%';
+    dot1.classList.toggle('done', pct===100);
+    bar2.style.background = pct===100 ? 'var(--ok)' : 'var(--muted)';
+  }
+
+  function validate(show){
+    const vm={
+      name:isName(f.name.value), dob:is18Plus(f.dob.value), gender:!!f.gender.value,
+      father:isName(f.father.value), marital:!!f.marital.value, email:isEmail(f.email.value),
+      mobile:isMobile(f.mobile.value), addr1:f.addr1.value.trim().length>3,
+      pin:isPin(f.pin.value), city:f.city.value.trim().length>0, state:f.state.value.trim().length>0
+    };
+    if(show){
+      setErr(g.name,!vm.name); setErr(g.dob,!vm.dob); setErr(g.gender,!vm.gender);
+      setErr(g.father,!vm.father); setErr(g.marital,!vm.marital); setErr(g.email,!vm.email);
+      setErr(g.mobile,!vm.mobile); setErr(g.addr1,!vm.addr1); setErr(g.pin,!vm.pin);
     }
+    const ok=Object.values(vm).every(Boolean);
+    f.next.disabled=!ok;
+    f.next.className= ok ? "px-8 py-3 rounded-full font-semibold text-white bg-[#0A2F33] hover:bg-[#062327] active:scale-[.98] transition"
+                         : "px-8 py-3 rounded-full font-semibold text-white bg-gray-300 cursor-not-allowed transition";
+    updateProgressUI(vm);
+    return ok;
+  }
 
-    // Prefill from saved data
-    (function prefill(){
-      try{
-        const lead = JSON.parse(localStorage.getItem('scf_lead')||'null');
-        const saved = JSON.parse(localStorage.getItem('scf_apply')||'null')?.personal;
-        const src = Object.assign({}, lead||{}, saved||{});
-        if(src.name) F.name.value = src.name;
-        if(src.email) F.email.value = src.email;
-        if(src.mobile){ F.mobile.value = (src.mobile+'').replace('+91',''); }
-        if(saved){
-          ['dob','gender','marital','employment','income','employer','residence','pincode','addr1','city','state']
-            .forEach(k=>{ if(saved[k]) F[k].value = saved[k]; });
-        }
-      }catch(_){}
-    })();
+  function saveDraft(){
+    const rec={name:titleCase(f.name.value),dob:f.dob.value,gender:f.gender.value,father:titleCase(f.father.value),
+      marital:f.marital.value,email:f.email.value.trim().toLowerCase(),mobile:f.mobile.value.trim(),
+      addr1:f.addr1.value.trim(),addr2:f.addr2.value.trim(),pin:f.pin.value.trim(),city:f.city.value.trim(),
+      state:f.state.value.trim(),ts:new Date().toISOString()};
+    localStorage.setItem(DRAFT_KEY,JSON.stringify(rec));
+  }
+  function loadDraft(){
+    try{
+      const d=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null'); if(!d) return;
+      if(d.name)f.name.value=d.name; if(d.dob)f.dob.value=d.dob; if(d.gender)f.gender.value=d.gender;
+      if(d.father)f.father.value=d.father; if(d.marital)f.marital.value=d.marital;
+      if(d.email)f.email.value=d.email; if(d.mobile)f.mobile.value=d.mobile.replace('+91','');
+      if(d.addr1)f.addr1.value=d.addr1; if(d.addr2)f.addr2.value=d.addr2;
+      if(d.pin)f.pin.value=d.pin; if(d.city)f.city.value=d.city; if(d.state)f.state.value=d.state;
+    }catch{}
+  }
 
-    function validate(show){
-      const okName = F.name.value.trim().length>=3;
-      const okEmail= isEmail(F.email.value);
-      const okMob  = isMobile(F.mobile.value);
-      const okDob  = ageFromDob(F.dob.value)>=18;
-      const okEmp  = !!F.employment.value;
-      const income = parseInt(F.income.value.replace(/[^\d]/g,''))||0;
-      const okInc  = income>=8000;
-      const okPin  = isPincode(F.pincode.value);
-
-      if(show){
-        setErr(G.name, !okName);
-        setErr(G.email,!okEmail);
-        setErr(G.mobile,!okMob);
-        setErr(G.dob,  !okDob);
-        setErr(G.emp,  !okEmp);
-        setErr(G.income,!okInc);
-        setErr(G.pin,  !okPin);
-      }
-      return okName && okEmail && okMob && okDob && okEmp && okInc && okPin;
-    }
-
-    // live validation (messages only)
-    ['input','blur','change'].forEach(ev=>{
-      Object.values(F).forEach(el=> el.addEventListener(ev, ()=>validate(false)));
-    });
-
-    // submit
-    $('nextBtn').addEventListener('click', (e)=>{
-      e.preventDefault();
-      if(!validate(true)) return;
-
-      const payload = {
-        name: toTitle(F.name.value),
-        email: F.email.value.trim().toLowerCase(),
-        mobile: '+91'+F.mobile.value.trim(),
-        dob: F.dob.value,
-        gender: F.gender.value,
-        marital: F.marital.value,
-        employment: F.employment.value,
-        income: (F.income.value+'').replace(/[^\d]/g,''),
-        employer: F.employer.value.trim(),
-        residence: F.residence.value,
-        pincode: F.pincode.value.trim(),
-        addr1: F.addr1.value.trim(),
-        city: toTitle(F.city.value),
-        state: toTitle(F.state.value),
-        ts: new Date().toISOString()
+  // FORCE prefill from URL/app/lead (URL has highest priority). '+' -> space handled.
+  function prefillFromIndexForce(){
+    try{
+      const qs=new URLSearchParams(location.search);
+      const urlLead={
+        name: deplus(qs.get('name')||qs.get('n')||''),
+        email: (qs.get('email')||qs.get('e')||''),
+        mobile: (qs.get('mobile')||qs.get('m')||'')
       };
+      const lead=JSON.parse(localStorage.getItem(LEAD_KEY)||'null')||{};
+      const app =JSON.parse(localStorage.getItem(APP_KEY)||'null')||{};
+      const src = (urlLead.name||urlLead.email||urlLead.mobile) ? urlLead : (app.name||app.email||app.mobile) ? app : lead;
 
-      // merge into scf_apply
-      const all = JSON.parse(localStorage.getItem('scf_apply')||'{}');
-      all.personal = payload;
-      localStorage.setItem('scf_apply', JSON.stringify(all));
+      if(src.name)   f.name.value   = titleCase(src.name);
+      if(src.email)  f.email.value  = String(src.email).trim().toLowerCase();
+      if(src.mobile) f.mobile.value = clean10(src.mobile);
+    }catch{}
+  }
 
-      // info bar and go next
-      document.getElementById('saveOk').classList.remove('hidden');
-      setTimeout(()=> location.href='apply-kyc.html', 600);
+  // pincode → city/state
+  let pinTimer=null;
+  f.pin.addEventListener('input',()=>{
+    f.city.value=''; f.state.value='';
+    if(pinTimer)clearTimeout(pinTimer);
+    const v=f.pin.value.replace(/\D/g,'').slice(0,6); f.pin.value=v;
+    if(v.length===6) pinTimer=setTimeout(fetchPin,300);
+    validate(false); saveDraft();
+  });
+  async function fetchPin(){
+    const p=f.pin.value; if(!/^[1-9]\d{5}$/.test(p)) return;
+    try{
+      const r=await fetch('https://api.postalpincode.in/pincode/'+p); const d=await r.json();
+      const ok=Array.isArray(d)&&d[0]?.Status==='Success'&&d[0]?.PostOffice?.length;
+      if(ok){ const po=d[0].PostOffice[0]; f.city.value=po.District||po.Block||''; f.state.value=po.State||''; }
+      else{ f.city.value=''; f.state.value=''; }
+    }catch{ f.city.value=''; f.state.value=''; }
+    saveDraft(); validate(false);
+  }
+
+  // listeners
+  ['name','dob','gender','father','marital','email','mobile','addr1','addr2','city','state','pin'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input',()=>{ validate(false); saveDraft(); });
+    el.addEventListener('blur',()=>{ validate(true); saveDraft(); });
+  });
+
+  // app helpers
+  function genAppId(){
+    const d=new Date(), y=String(d.getFullYear()).slice(-2), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+    const rnd=Math.floor(10000+Math.random()*90000); return `SCF${y}${m}${day}-${rnd}`;
+  }
+  function getApp(){ try{return JSON.parse(localStorage.getItem(APP_KEY)||'null')}catch{return null} }
+  function setApp(o){ localStorage.setItem(APP_KEY,JSON.stringify(o||{})) }
+  function showAppId(id){ if(id){ appIdText.textContent=id; appIdPill.classList.remove('hidden'); } }
+  function setLocked(locked){
+    document.querySelectorAll('#pform input,#pform select,#pform textarea').forEach(el=>{
+      const ro=el.id==='city'||el.id==='state'; el.readOnly=locked||ro; if(el.tagName==='SELECT') el.disabled=locked;
+      el.classList.toggle('bg-gray-50',locked);
     });
-  </script>
+    document.getElementById('nextBtn').style.display=locked?'none':''; 
+    lockNote.classList.toggle('hidden',!locked);
+  }
+
+  // submit (local only → Work)
+  function submitLocal(){
+    if(!validate(true)) return;
+    const rec={name:titleCase(f.name.value),dob:f.dob.value,gender:f.gender.value,father:titleCase(f.father.value),
+      marital:f.marital.value,email:f.email.value.trim().toLowerCase(),mobile:'+91'+clean10(f.mobile.value),
+      addr1:f.addr1.value.trim(),addr2:f.addr2.value.trim(),pin:f.pin.value.trim(),city:f.city.value.trim(),
+      state:f.state.value.trim(),ts:new Date().toISOString()};
+    localStorage.setItem(DRAFT_KEY,JSON.stringify(rec));
+    const app=getApp()||{}; if(!app.appId) app.appId=genAppId();
+    const meta={appId:app.appId,stage:'Work',email:rec.email,mobile:rec.mobile,name:rec.name};
+    setApp(meta); showAppId(meta.appId); setLocked(true);
+    window.location.href='apply.work.html';
+  }
+
+  document.getElementById('nextBtn').addEventListener('click',e=>{e.preventDefault();submitLocal();});
+  document.getElementById('backBtn').addEventListener('click',e=>{e.preventDefault();saveDraft(); if(history.length>1) history.back(); else location.href='index.html';});
+
+  // init
+  (function(){
+    loadDraft();
+    prefillFromIndexForce();   // << URL + app + lead (force)
+    validate(false);
+    const app=getApp(); if(app?.appId) showAppId(app.appId);
+    if(app?.stage && app.stage!=='Personal'){
+      setLocked(true);
+      setTimeout(()=>{
+        const map={Work:'apply.work.html',KYC:'apply.kyc.html',Bank:'apply.bank.html',Offer:'offer.html',Disbursed:'disbursed.html'};
+        if(map[app.stage]) location.href=map[app.stage];
+      },300);
+    }
+  })();
+</script>
 </body>
 </html>

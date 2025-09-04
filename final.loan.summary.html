@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Loan Summary — SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --ink:#0A2F33; --ok:#10b981; --muted:#e5e7eb; }
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .card{border-radius:1.25rem;box-shadow:0 8px 28px rgba(0,0,0,.08)}
+    .step-dot{width:14px;height:14px;border-radius:9999px;background:#d1d5db}
+    .step-dot.done{background:var(--ok)}
+    .linkbar{height:6px;border-radius:9999px;background:var(--muted);overflow:hidden;position:relative}
+    .linkfill{height:100%;background:var(--ok);transition:width .6s ease}
+    .row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6}
+    .label{font-weight:600;color:#374151}
+    .val{color:#111827}
+    .method{border:2px solid transparent;transition:all .3s ease}
+    .method.active{border-color:#10b981;background:#ecfdf5}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+<!-- HEADER -->
+<header class="border-b bg-white sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+    <img src="assets/logo.png" class="w-12 h-12 rounded-lg" alt="SmartCash"/>
+    <div>
+      <div class="text-xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+      <div class="text-[11px] tracking-widest text-blue-600 uppercase">Finance</div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="bg-[#1f5d63] text-white">
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <h1 class="text-3xl md:text-4xl font-extrabold">Loan Summary</h1>
+    <p class="text-white/90 mt-1">Your approved loan details</p>
+
+    <!-- STEPPER -->
+    <div class="mt-6 bg-white/10 rounded-2xl px-4 py-3">
+      <div class="flex items-center gap-2">
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:50%"></div></div>
+        <span class="step-dot"></span>
+      </div>
+      <div class="grid grid-cols-6 mt-2 text-center text-sm text-white/90">
+        <div>Personal</div><div>Work</div><div>KYC</div><div>Bank</div><div>Offer</div><div>Disbursed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="max-w-3xl mx-auto px-6 -mt-8 pb-16 space-y-10">
+
+  <!-- Loan Details -->
+  <div class="bg-white card p-8">
+    <h2 class="text-xl font-bold mb-6 border-b pb-2">Loan Details</h2>
+    <div class="space-y-2">
+      <div class="row"><div class="label">Application ID</div><div id="loanId" class="val">—</div></div>
+      <div class="row"><div class="label">Customer Name</div><div id="custName" class="val">—</div></div>
+      <div class="row"><div class="label">Bank Name</div><div id="bankName" class="val">—</div></div>
+      <div class="row"><div class="label">Account Number</div><div id="accNum" class="val">—</div></div>
+      <div class="row"><div class="label">Chosen Loan Amount</div><div id="loanAmt" class="val font-semibold text-green-700">—</div></div>
+      <div class="row"><div class="label">Processing Fee (3%)</div><div id="procFee" class="val text-red-600">—</div></div>
+      <div class="row"><div class="label">Net Disbursal</div><div id="netDisb" class="val font-bold text-green-700">—</div></div>
+      <div class="row"><div class="label">Tenure</div><div id="tenure" class="val">—</div></div>
+      <div class="row"><div class="label">APR</div><div id="apr" class="val">—</div></div>
+      <div class="row"><div class="label">Monthly EMI</div><div id="emi" class="val font-semibold">—</div></div>
+    </div>
+  </div>
+
+  <!-- Transfer Method -->
+  <div class="bg-white card p-8 text-center">
+    <h2 class="text-lg font-bold mb-6">Choose Transfer Method</h2>
+    <div id="methodOptions" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <label class="method cursor-pointer rounded-xl active">
+        <input type="radio" name="transfer" value="IMPS" checked hidden>
+        <div class="flex flex-col items-center p-4 rounded-xl">
+          <span class="text-3xl mb-2">💸</span>
+          <span class="font-medium">IMPS</span>
+          <span class="text-xs text-gray-500">Instant 24×7</span>
+        </div>
+      </label>
+      <label class="method cursor-pointer rounded-xl">
+        <input type="radio" name="transfer" value="NEFT" hidden>
+        <div class="flex flex-col items-center p-4 rounded-xl">
+          <span class="text-3xl mb-2">🏦</span>
+          <span class="font-medium">NEFT</span>
+          <span class="text-xs text-gray-500">2–3 Hours</span>
+        </div>
+      </label>
+      <label class="method cursor-pointer rounded-xl">
+        <input type="radio" name="transfer" value="RTGS" hidden>
+        <div class="flex flex-col items-center p-4 rounded-xl">
+          <span class="text-3xl mb-2">⚡</span>
+          <span class="font-medium">RTGS</span>
+          <span class="text-xs text-gray-500">High Value</span>
+        </div>
+      </label>
+    </div>
+    <button id="transferBtn" class="w-full px-8 py-4 text-lg rounded-full font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 shadow-md transition flex items-center justify-center gap-2">
+      Transfer Money
+    </button>
+  </div>
+
+  <!-- RBI Guidelines -->
+  <div class="bg-white card p-8">
+    <h3 class="text-lg font-bold mb-6">Important Information</h3>
+    <ul class="space-y-3 text-sm text-gray-700">
+      <li>✅ Loans are facilitated through RBI-registered NBFCs & Partner Banks.</li>
+      <li>✅ Loan disbursal is subject to final credit approval & successful KYC.</li>
+      <li>✅ EMI auto-debit will begin from your registered bank account.</li>
+      <li>✅ Interest is calculated on reducing balance method unless specified.</li>
+      <li>✅ Prepayment or foreclosure may attract additional charges.</li>
+      <li>✅ Customers are protected under RBI Fair Practices Code guidelines.</li>
+    </ul>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-[#0A2F33] text-white py-6 mt-8">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-sm">
+    <div>© <span id="yr"></span> SmartCash Finance • All Rights Reserved</div>
+    <div class="flex gap-4 mt-2 md:mt-0">
+      <a href="privacy.html" class="hover:underline">Privacy</a>
+      <a href="terms.html" class="hover:underline">Terms</a>
+      <a href="contact.html" class="hover:underline">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+
+  const APP_KEY='scf_app', PERSONAL_KEY='scf_apply_personal', BANK_KEY='scf_apply_bank';
+  function get(k){ try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null} }
+
+  const app = get(APP_KEY)||{};
+  const personal = get(PERSONAL_KEY)||{};
+  const bank = get(BANK_KEY)||{};
+
+  // Show personal + bank details
+  document.getElementById('loanId').textContent = app?.appId || "—";
+  document.getElementById('custName').textContent = personal?.name || app?.name || "—";
+  document.getElementById('bankName').textContent = bank?.bank || "—";
+  document.getElementById('accNum').textContent = bank?.acc ? "****" + bank.acc.slice(-4) : "—";
+
+  // Always prefer user chosen loan & tenure from Offer page
+  const chosen = Number(app?.chosen || 0);
+  const amt = chosen > 0 ? chosen : Number(app?.approved || 0);
+  const apr = Number(app?.apr || 0);
+  const tenure = Number(app?.tenure || 0);
+
+  const fee = Math.round(amt*0.03);
+  const net = amt-fee;
+
+  function calcEMI(p,r,n){
+    r=r/12/100;
+    return Math.round(p*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1));
+  }
+  const emi = (amt && tenure) ? calcEMI(amt,apr,tenure) : 0;
+
+  document.getElementById('loanAmt').textContent = amt ? "₹"+amt.toLocaleString() : "—";
+  document.getElementById('procFee').textContent = fee ? "-₹"+fee.toLocaleString() : "—";
+  document.getElementById('netDisb').textContent = net ? "₹"+net.toLocaleString() : "—";
+  document.getElementById('tenure').textContent = tenure ? tenure+" months" : "—";
+  document.getElementById('apr').textContent = apr ? apr+"% p.a." : "—";
+  document.getElementById('emi').textContent = emi ? "₹"+emi.toLocaleString() : "—";
+
+  // highlight selected method
+  const methods=document.querySelectorAll('.method');
+  methods.forEach(m=>{
+    m.querySelector('input').addEventListener('change',()=>{
+      methods.forEach(x=>x.classList.remove('active'));
+      if(m.querySelector('input').checked){ m.classList.add('active'); }
+    });
+  });
+
+  // transfer button
+  document.getElementById('transferBtn').addEventListener('click',()=>{
+    const btn=document.getElementById('transferBtn');
+    const mode=document.querySelector('input[name="transfer"]:checked')?.value || "—";
+
+    // save transfer mode in localStorage
+    app.mode=mode;
+    localStorage.setItem(APP_KEY, JSON.stringify(app));
+
+    btn.disabled=true;
+    btn.innerHTML=`<svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg> Processing...`;
+    setTimeout(()=>{ window.location.href="disbursed.html"; },1500);
+  });
+</script>
+</body>
+</html>

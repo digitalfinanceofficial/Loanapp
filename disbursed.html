@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Loan Disbursed — SmartCash Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root { --ink:#0A2F33; --ok:#10b981; --muted:#e5e7eb; }
+    body {font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .card {border-radius:1.25rem;box-shadow:0 8px 28px rgba(0,0,0,.08)}
+    .step-dot {width:14px;height:14px;border-radius:9999px;background:var(--muted)}
+    .step-dot.done {background:var(--ok)}
+    .linkbar {height:6px;border-radius:9999px;background:var(--muted);overflow:hidden;position:relative}
+    .linkfill {height:100%;width:0;background:var(--ok);transition:width .6s ease}
+    .tick {
+      width:80px;height:80px;border-radius:50%;
+      background:#10b981;display:flex;align-items:center;justify-content:center;
+      color:white;font-size:40px;box-shadow:0 8px 20px rgba(16,185,129,.4);
+      margin:0 auto;animation:pop .6s ease;
+    }
+    @keyframes pop {0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+<!-- HEADER -->
+<header class="border-b bg-white sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+    <img src="assets/logo.png" class="w-12 h-12 rounded-lg" alt="SmartCash"/>
+    <div>
+      <div class="text-xl font-extrabold text-blue-700 leading-tight">SmartCash</div>
+      <div class="text-[11px] tracking-widest text-blue-600 uppercase">Finance</div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="bg-[#1f5d63] text-white">
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <h1 class="text-3xl md:text-4xl font-extrabold">Loan Disbursed</h1>
+    <p class="text-white/90 mt-1">Congratulations! Your loan has been successfully transferred to your account.</p>
+
+    <!-- STEPPER -->
+    <div class="mt-6 bg-white/10 rounded-2xl px-4 py-3">
+      <div class="flex items-center gap-2">
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+        <div class="flex-1 linkbar"><div class="linkfill" style="width:100%"></div></div>
+        <span class="step-dot done"></span>
+      </div>
+      <div class="grid grid-cols-6 mt-2 text-center text-sm text-white/90">
+        <div>Personal</div><div>Work</div><div>KYC</div><div>Bank</div><div>Offer</div><div>Disbursed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="max-w-3xl mx-auto px-6 -mt-10 pb-16 space-y-10 text-center">
+
+  <!-- Success Tick -->
+  <div class="tick">✔</div>
+  <h2 class="text-2xl font-bold text-green-700 mt-4">Loan Disbursed Successfully</h2>
+  <p class="text-gray-600">Your funds have been credited to your account</p>
+
+  <!-- Loan Transfer Card -->
+  <div class="relative max-w-2xl mx-auto card p-10 border border-gray-200 bg-white/70 backdrop-blur-md">
+    <!-- Watermark -->
+    <div class="absolute inset-0 bg-center bg-no-repeat opacity-5" 
+         style="background-image:url('assets/logo.png'); background-size:180px;"></div>
+
+    <h3 class="text-2xl font-extrabold mb-2 text-[#0A2F33] text-center">Transfer Receipt</h3>
+    <p class="text-sm text-gray-600 mb-8 text-center">This document confirms the disbursal of your approved loan.</p>
+
+    <div class="divide-y divide-gray-200 relative z-10" id="transferDetails"></div>
+
+    <!-- Digital Stamp -->
+    <div class="absolute bottom-4 right-6 text-green-700 border-2 border-green-700 px-4 py-1 rounded-md text-sm font-bold rotate-[-8deg] bg-white shadow">
+      Digitally Signed ✔
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="bg-white card p-6 space-y-4">
+    <h3 class="text-lg font-bold">Next Actions</h3>
+    <button onclick="downloadEMISchedule()" class="w-full px-6 py-3 rounded-lg font-semibold text-white bg-blue-700 hover:bg-blue-800">📄 Download EMI Schedule</button>
+    <button onclick="downloadAgreement()" class="w-full px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700">📑 Download Loan Agreement</button>
+    <button onclick="downloadPersonalDetails()" class="w-full px-6 py-3 rounded-lg font-semibold text-white bg-gray-700 hover:bg-gray-800">👤 Download Personal Details</button>
+    <button onclick="downloadReceipt()" class="w-full px-6 py-3 rounded-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700">🧾 Download Transfer Receipt</button>
+    <button id="resetBtn" class="w-full px-6 py-3 rounded-lg font-semibold text-white bg-red-600 hover:bg-red-700">♻ Reset Application Data</button>
+  </div>
+
+  <!-- Info -->
+  <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 text-sm text-left text-gray-700">
+    <h4 class="font-bold mb-3">Important Information</h4>
+    <ul class="list-disc ml-5 space-y-2">
+      <li>All loans are facilitated through RBI-registered NBFCs & Partner Banks.</li>
+      <li>EMI auto-debit will begin from your registered bank account.</li>
+      <li>Prepayment or foreclosure may attract charges as per policy.</li>
+      <li>Customers are protected under RBI’s Fair Practices Code guidelines.</li>
+      <li>For grievance redressal, contact Partner NBFCs or RBI Ombudsman.</li>
+    </ul>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-[#0A2F33] text-white py-6 mt-8">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-sm">
+    <div>© <span id="yr"></span> SmartCash Finance • RBI Registered NBFC Partner</div>
+    <div class="flex gap-4 mt-2 md:mt-0">
+      <a href="privacy.html" class="hover:underline">Privacy</a>
+      <a href="terms.html" class="hover:underline">Terms</a>
+      <a href="contact.html" class="hover:underline">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  const { jsPDF } = window.jspdf;
+
+  const app=JSON.parse(localStorage.getItem("scf_app")||"{}");
+  const personal=JSON.parse(localStorage.getItem("scf_apply_personal")||"{}");
+  const bank=JSON.parse(localStorage.getItem("scf_apply_bank")||"{}");
+  const transfer=localStorage.getItem("scf_transfer")||"IMPS";
+
+  const amt=Number(app?.chosen||app?.approved||0);
+  const apr=Number(app?.apr||0);
+  const tenure=Number(app?.tenure||0);
+  const fee=Math.round(amt*0.03);
+  const net=amt-fee;
+  function calcEMI(p,r,n){ r=r/12/100; return Math.round(p*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1)); }
+  const emi=(amt&&tenure)?calcEMI(amt,apr,tenure):0;
+
+  // Fill transfer details
+  document.getElementById("transferDetails").innerHTML=`
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Application ID</span><span class="font-semibold text-gray-900">${app.appId||"-"}</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Customer Name</span><span class="font-semibold text-gray-900">${personal.name||"-"}</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Bank</span><span class="font-semibold text-gray-900">${bank.bank||"-"}</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Account No</span><span class="font-mono font-bold tracking-widest text-gray-900">${bank.acc?"****"+bank.acc.slice(-4):"-"}</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Approved Amount</span><span class="font-semibold text-green-700 text-lg">₹${amt.toLocaleString()}</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Processing Fee (3%)</span><span class="font-semibold text-red-600">-₹${fee.toLocaleString()}</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Net Disbursal</span><span class="font-bold text-green-700 text-lg">₹${net.toLocaleString()}</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Tenure</span><span class="font-semibold text-gray-900">${tenure} months</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">APR</span><span class="font-semibold text-gray-900">${apr}% p.a.</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Monthly EMI</span><span class="font-bold text-[#0A2F33]">₹${emi.toLocaleString()}</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Transfer Mode</span><span class="font-semibold text-gray-900">${transfer}</span></div>
+    <div class="flex justify-between py-3"><span class="text-gray-600 font-medium">Date</span><span class="font-semibold text-gray-900">${new Date().toLocaleDateString()}</span></div>
+  `;
+
+  // Confetti
+  setTimeout(()=>{ confetti({particleCount:150,spread:70,origin:{y:0.6}}); },600);
+
+  // Download Transfer Receipt
+  function downloadReceipt(){
+    const doc=new jsPDF();
+    doc.setFontSize(16);
+    doc.text("Transfer Receipt",105,20,null,null,"center");
+    doc.setFontSize(12);
+    const lines=[
+      `Application ID: ${app.appId||"-"}`,
+      `Customer Name: ${personal.name||"-"}`,
+      `Bank: ${bank.bank||"-"}`,
+      `Account No: ${bank.acc?"****"+bank.acc.slice(-4):"-"}`,
+      `Approved Amount: ₹${amt.toLocaleString()}`,
+      `Processing Fee: ₹${fee.toLocaleString()}`,
+      `Net Disbursal: ₹${net.toLocaleString()}`,
+      `Tenure: ${tenure} months`,
+      `APR: ${apr}% p.a.`,
+      `Monthly EMI: ₹${emi.toLocaleString()}`,
+      `Transfer Mode: ${transfer}`,
+      `Date: ${new Date().toLocaleDateString()}`
+    ];
+    let y=40; lines.forEach(l=>{ doc.text(l,20,y); y+=12; });
+    doc.text("This is a system generated receipt.",20,y+20);
+    doc.save("Transfer_Receipt.pdf");
+  }
+
+  // Reset
+  document.getElementById("resetBtn").addEventListener("click",()=>{
+    localStorage.clear();
+    alert("Application data has been reset.");
+    window.location.href="index.html";
+  });
+</script>
+</body>
+</html>
